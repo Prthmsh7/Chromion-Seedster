@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import VideoPlayer from './VideoPlayer';
+import { Video } from '../types/Video';
 import { 
   TrendingUp, 
   DollarSign, 
@@ -14,6 +16,103 @@ interface InvestmentStreamProps {
 }
 
 const InvestmentStream: React.FC<InvestmentStreamProps> = ({ onBack }) => {
+  // Investment-focused video queue
+  const [videoQueue, setVideoQueue] = useState<Video[]>([
+    {
+      id: '1',
+      title: 'Revolutionary FinTech Startup - Next Unicorn Opportunity',
+      channel: 'Z Combinator Ventures',
+      views: '2.4M views',
+      timestamp: '1 day ago',
+      duration: '18:45',
+      thumbnail: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      channelAvatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=2',
+      description: 'Discover the next big opportunity in financial technology. This revolutionary startup is transforming how people invest, with cutting-edge AI algorithms and blockchain integration. Early investors have already seen 300% returns in just 18 months.',
+      likes: '89K',
+      subscribers: '1.2M',
+      category: 'investment',
+      investmentData: {
+        fundName: 'FinTech Innovation Fund',
+        returnRate: '+347%',
+        riskLevel: 'High',
+        minInvestment: '$25,000',
+        totalRaised: '$12.5M',
+        investorsCount: 156
+      }
+    },
+    {
+      id: '2',
+      title: 'Green Energy Portfolio - Sustainable Investment Strategy',
+      channel: 'EcoInvest Partners',
+      views: '1.8M views',
+      timestamp: '2 days ago',
+      duration: '22:15',
+      thumbnail: 'https://images.pexels.com/photos/9800029/pexels-photo-9800029.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
+      channelAvatar: 'https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=2',
+      description: 'Invest in the future of clean energy with our diversified portfolio of solar, wind, and battery technology companies. Stable returns with positive environmental impact.',
+      likes: '67K',
+      subscribers: '890K',
+      category: 'investment',
+      investmentData: {
+        fundName: 'Green Energy Portfolio',
+        returnRate: '+24.8%',
+        riskLevel: 'Low',
+        minInvestment: '$10,000',
+        totalRaised: '$45.2M',
+        investorsCount: 892
+      }
+    },
+    {
+      id: '3',
+      title: 'AI & Machine Learning Investment Opportunities 2024',
+      channel: 'TechVenture Capital',
+      views: '3.1M views',
+      timestamp: '3 days ago',
+      duration: '16:30',
+      thumbnail: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+      channelAvatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=2',
+      description: 'Explore the most promising AI and machine learning startups of 2024. From autonomous vehicles to healthcare AI, discover where the smart money is investing.',
+      likes: '124K',
+      subscribers: '2.1M',
+      category: 'analysis',
+      investmentData: {
+        fundName: 'AI Innovation Fund',
+        returnRate: '+156%',
+        riskLevel: 'Medium',
+        minInvestment: '$50,000',
+        totalRaised: '$78.9M',
+        investorsCount: 234
+      }
+    },
+    {
+      id: '4',
+      title: 'Crypto Market Analysis - DeFi Investment Strategies',
+      channel: 'BlockChain Ventures',
+      views: '1.5M views',
+      timestamp: '4 days ago',
+      duration: '14:20',
+      thumbnail: 'https://images.pexels.com/photos/8369648/pexels-photo-8369648.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+      channelAvatar: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
+      description: 'Navigate the complex world of DeFi investments with expert analysis and proven strategies. Learn about yield farming, liquidity mining, and emerging protocols.',
+      likes: '78K',
+      subscribers: '1.5M',
+      category: 'education',
+      investmentData: {
+        fundName: 'DeFi Diversified Fund',
+        returnRate: '+89.3%',
+        riskLevel: 'High',
+        minInvestment: '$15,000',
+        totalRaised: '$23.7M',
+        investorsCount: 445
+      }
+    }
+  ]);
+
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -29,6 +128,30 @@ const InvestmentStream: React.FC<InvestmentStreamProps> = ({ onBack }) => {
   useEffect(() => {
     setIsLoaded(true);
   }, []);
+
+  const handleVideoUpload = (uploadedVideo: Video) => {
+    setVideoQueue(prevQueue => [...prevQueue, uploadedVideo]);
+  };
+
+  const handleNextVideo = () => {
+    if (currentVideoIndex < videoQueue.length - 1) {
+      setCurrentVideoIndex(currentVideoIndex + 1);
+    }
+  };
+
+  const handleVideoSelect = (videoIndex: number) => {
+    setCurrentVideoIndex(videoIndex);
+  };
+
+  const filteredVideos = videoQueue.filter(video => {
+    const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
+    const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         video.channel.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const currentVideo = filteredVideos[currentVideoIndex] || videoQueue[0];
+  const upNextVideos = filteredVideos.slice(currentVideoIndex + 1);
 
   return (
     <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
@@ -86,24 +209,20 @@ const InvestmentStream: React.FC<InvestmentStreamProps> = ({ onBack }) => {
         </div>
       </header>
 
-      {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center py-16">
-          <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <Play size={32} className="text-white ml-1" />
-          </div>
-          <h2 className="text-2xl font-bold text-text-primary mb-4">Investment Stream Coming Soon</h2>
-          <p className="text-text-secondary mb-8 max-w-2xl mx-auto">
-            We're working on bringing you high-quality investment content and opportunities through our video streaming platform.
-          </p>
-          <button
-            onClick={onBack}
-            className="px-6 py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300"
-          >
-            Return to Dashboard
-          </button>
+      {/* Video Player - Responsive container */}
+      {currentVideo && (
+        <div className="max-w-[1600px] mx-auto">
+          <VideoPlayer 
+            video={currentVideo}
+            upNextVideos={upNextVideos}
+            onVideoUpload={handleVideoUpload}
+            onNextVideo={handleNextVideo}
+            onVideoSelect={handleVideoSelect}
+            currentVideoIndex={currentVideoIndex}
+            isInvestmentFocused={true}
+          />
         </div>
-      </div>
+      )}
     </div>
   );
 };
