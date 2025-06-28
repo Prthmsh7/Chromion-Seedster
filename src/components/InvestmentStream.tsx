@@ -109,6 +109,52 @@ const InvestmentStream: React.FC<InvestmentStreamProps> = ({ onBack }) => {
         totalRaised: '$23.7M',
         investorsCount: 445
       }
+    },
+    {
+      id: '5',
+      title: 'Real Estate Tokenization - The Future of Property Investment',
+      channel: 'PropTech Innovators',
+      views: '980K views',
+      timestamp: '1 week ago',
+      duration: '25:10',
+      thumbnail: 'https://images.pexels.com/photos/323780/pexels-photo-323780.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4',
+      channelAvatar: 'https://images.pexels.com/photos/614810/pexels-photo-614810.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=2',
+      description: 'Discover how blockchain technology is revolutionizing real estate investment through tokenization. Learn about fractional ownership, increased liquidity, and global access to property markets.',
+      likes: '56K',
+      subscribers: '750K',
+      category: 'investment',
+      investmentData: {
+        fundName: 'Tokenized Real Estate Fund',
+        returnRate: '+18.5%',
+        riskLevel: 'Medium',
+        minInvestment: '$5,000',
+        totalRaised: '$32.1M',
+        investorsCount: 678
+      }
+    },
+    {
+      id: '6',
+      title: 'Healthcare Tech Startups - Investment Analysis 2024',
+      channel: 'MedTech Capital',
+      views: '1.2M views',
+      timestamp: '5 days ago',
+      duration: '19:45',
+      thumbnail: 'https://images.pexels.com/photos/3938023/pexels-photo-3938023.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=2',
+      videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4',
+      channelAvatar: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=40&h=40&dpr=2',
+      description: 'An in-depth analysis of the most promising healthcare technology startups of 2024. From AI diagnostics to remote patient monitoring, discover the innovations transforming healthcare.',
+      likes: '72K',
+      subscribers: '980K',
+      category: 'analysis',
+      investmentData: {
+        fundName: 'Healthcare Innovation Fund',
+        returnRate: '+62.7%',
+        riskLevel: 'Medium',
+        minInvestment: '$30,000',
+        totalRaised: '$54.3M',
+        investorsCount: 312
+      }
     }
   ]);
 
@@ -134,7 +180,7 @@ const InvestmentStream: React.FC<InvestmentStreamProps> = ({ onBack }) => {
   };
 
   const handleNextVideo = () => {
-    if (currentVideoIndex < videoQueue.length - 1) {
+    if (currentVideoIndex < filteredVideos.length - 1) {
       setCurrentVideoIndex(currentVideoIndex + 1);
     }
   };
