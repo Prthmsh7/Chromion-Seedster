@@ -21,7 +21,7 @@ export const Coin = () => {
   return (
     <group>
       {/* Main coin body */}
-      <mesh ref={coinRef} scale={[1.5, 1.5, 1.5]}>
+      <mesh ref={coinRef} scale={[2, 2, 2]}>
         <cylinderGeometry args={[1, 1, 0.1, 64]} />
         <meshStandardMaterial 
           color="#FFD700" 
@@ -33,7 +33,7 @@ export const Coin = () => {
       </mesh>
       
       {/* Coin edge detail */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} scale={[1.5, 1.5, 1.5]}>
+      <mesh rotation={[Math.PI / 2, 0, 0]} scale={[2, 2, 2]}>
         <torusGeometry args={[1, 0.05, 16, 100]} />
         <meshStandardMaterial 
           color="#FFC107" 
@@ -43,7 +43,7 @@ export const Coin = () => {
       </mesh>
       
       {/* Coin face details - simplified $ symbol */}
-      <group position={[0, 0.06, 0]} scale={[1.5, 1.5, 1.5]}>
+      <group position={[0, 0.06, 0]} scale={[2, 2, 2]}>
         <mesh position={[0, 0, 0.2]}>
           <cylinderGeometry args={[0.6, 0.6, 0.01, 32]} />
           <meshStandardMaterial 

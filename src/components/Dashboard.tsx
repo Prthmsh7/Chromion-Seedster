@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   TrendingUp, 
   Users, 
@@ -34,8 +34,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       trend: 'up',
       icon: Users,
       color: 'text-primary',
-      bgColor: 'bg-accent',
-      hasCoin: true
+      bgColor: 'bg-accent'
     },
     {
       title: 'Marketplace Volume',
@@ -168,13 +167,13 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           </p>
         </div>
 
-        {/* Stats Grid with 3D Coin Animation */}
+        {/* Stats Grid with Coin Animation */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12 lg:mb-16">
           {stats.map((stat, index) => (
             <div key={stat.title} className={`neo-card ${stat.bgColor} p-6 lg:p-8 stagger-item relative overflow-hidden`} style={{ animationDelay: `${index * 0.1}s` }}>
-              {/* 3D Coin Animation - only for Active Projects */}
-              {stat.hasCoin && (
-                <div className="absolute top-2 right-2 w-16 h-16 opacity-30">
+              {/* Only add the coin animation to the first card (Active Projects) */}
+              {index === 0 && (
+                <div className="absolute top-0 right-0 w-32 h-32">
                   <Scene3D>
                     <Coin />
                   </Scene3D>
@@ -269,20 +268,21 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => onNavigate('marketplace')}
               >
+                {/* Rank Badge */}
+                <div className={`absolute top-3 left-3 z-10 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                  index === 0 ? 'bg-secondary' :
+                  index === 1 ? 'bg-text-muted' :
+                  'bg-warning'
+                }`}>
+                  {index + 1}
+                </div>
+
                 <div className="relative">
                   <img 
                     src={project.image} 
                     alt={project.name}
                     className="w-full h-48 object-cover"
                   />
-                  <div className={`absolute top-3 left-3 z-10 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
-                    index === 0 ? 'bg-secondary' :
-                    index === 1 ? 'bg-text-muted' :
-                    'bg-warning'
-                  }`}>
-                    {index + 1}
-                  </div>
-
                   <div className="absolute top-3 right-3">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       project.status === 'Hot' ? 'bg-error text-white' :
