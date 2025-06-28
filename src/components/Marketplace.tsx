@@ -34,10 +34,6 @@ import {
   Phone
 } from 'lucide-react';
 import { demoProjects, developerProfiles, searchProjects, searchDevelopers, getDeveloperById, type DemoProject, type DeveloperProfile } from '../data/demoProjects';
-import { Scene3D, Scene3DCanvas } from './3d/Scene3D';
-import { Pie } from './3d/animations/Pie';
-import { Stagger } from './3d/animations/Stagger';
-import { Balance } from './3d/animations/Balance';
 
 interface MarketplaceProps {
   onBack: () => void;
@@ -143,19 +139,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
   const renderProjectCard = (project: DemoProject, index: number) => (
     <div 
       key={project.id} 
-      className="bg-white rounded-2xl border border-light-border overflow-hidden hover:border-primary/50 hover:shadow-xl transition-all duration-300 cursor-pointer card-hover stagger-item group relative" 
+      className="bg-white rounded-2xl border border-light-border overflow-hidden hover:border-primary/50 hover:shadow-xl transition-all duration-300 cursor-pointer card-hover stagger-item group" 
       style={{ animationDelay: `${index * 0.1}s` }}
       onClick={() => handleProjectClick(project)}
     >
-      {/* 3D Animation */}
-      <div className="absolute top-2 right-2 w-16 h-16 opacity-20 z-10">
-        <Scene3D>
-          {index % 3 === 0 ? <Pie /> : 
-           index % 3 === 1 ? <Stagger /> : 
-           <Balance />}
-        </Scene3D>
-      </div>
-      
       <div className="relative">
         <img 
           src={project.thumbnail_url} 
@@ -188,7 +175,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
         </div>
       </div>
       
-      <div className="p-6 relative z-10">
+      <div className="p-6">
         <h4 className="font-semibold text-lg text-text-primary group-hover:text-primary transition-colors duration-300 line-clamp-2 mb-2">
           {project.title}
         </h4>
@@ -228,20 +215,11 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
   const renderDeveloperCard = (developer: DeveloperProfile, index: number) => (
     <div 
       key={developer.id} 
-      className="bg-white rounded-2xl border border-light-border p-6 hover:border-primary/50 hover:shadow-xl transition-all duration-300 cursor-pointer card-hover stagger-item group relative overflow-hidden" 
+      className="bg-white rounded-2xl border border-light-border p-6 hover:border-primary/50 hover:shadow-xl transition-all duration-300 cursor-pointer card-hover stagger-item group" 
       style={{ animationDelay: `${index * 0.1}s` }}
       onClick={() => handleDeveloperClick(developer)}
     >
-      {/* 3D Animation */}
-      <div className="absolute top-2 right-2 w-16 h-16 opacity-20 z-10">
-        <Scene3D>
-          {index % 3 === 0 ? <Pie /> : 
-           index % 3 === 1 ? <Stagger /> : 
-           <Balance />}
-        </Scene3D>
-      </div>
-      
-      <div className="flex items-start space-x-4 mb-4 relative z-10">
+      <div className="flex items-start space-x-4 mb-4">
         <div className="relative">
           <img 
             src={developer.avatar_url} 
@@ -268,9 +246,9 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
         </div>
       </div>
 
-      <p className="text-text-secondary text-sm mb-4 line-clamp-2 relative z-10">{developer.bio}</p>
+      <p className="text-text-secondary text-sm mb-4 line-clamp-2">{developer.bio}</p>
 
-      <div className="grid grid-cols-3 gap-4 mb-4 relative z-10">
+      <div className="grid grid-cols-3 gap-4 mb-4">
         <div className="text-center">
           <div className="text-lg font-bold text-text-primary">{developer.projects.length}</div>
           <div className="text-xs text-text-muted">Projects</div>
@@ -285,7 +263,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2 mb-4 relative z-10">
+      <div className="flex flex-wrap gap-2 mb-4">
         {developer.skills.slice(0, 3).map((skill, skillIndex) => (
           <span 
             key={skillIndex}
@@ -301,7 +279,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
         )}
       </div>
 
-      <button className="neo-btn w-full py-3 bg-secondary text-white font-medium hover:bg-secondary relative z-10">
+      <button className="neo-btn w-full py-3 bg-secondary text-white font-medium hover:bg-secondary">
         View Profile
       </button>
     </div>
@@ -312,14 +290,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
 
     return (
       <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div className="neo-card bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
-          {/* 3D Animation */}
-          <div className="absolute top-4 right-4 w-32 h-32 opacity-20 z-10">
-            <Scene3D>
-              <Pie />
-            </Scene3D>
-          </div>
-          
+        <div className="neo-card bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto">
           {/* Header with Image */}
           <div className="relative h-64">
             <img 
@@ -332,7 +303,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
             {/* Close button */}
             <button
               onClick={() => setShowProjectModal(false)}
-              className="absolute top-4 right-4 neo-btn p-2 bg-white text-text-primary hover:bg-light-hover z-20"
+              className="absolute top-4 right-4 neo-btn p-2 bg-white text-text-primary hover:bg-light-hover"
             >
               ✕
             </button>
@@ -356,7 +327,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
           </div>
 
           {/* Content */}
-          <div className="p-8 relative z-10">
+          <div className="p-8">
             <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
               <div>
                 <h2 className="text-3xl font-bold text-text-primary mb-2">{selectedProject.title}</h2>
@@ -492,24 +463,17 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
 
     return (
       <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div className="neo-card bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
-          {/* 3D Animation */}
-          <div className="absolute top-4 right-4 w-32 h-32 opacity-20 z-10">
-            <Scene3D>
-              <Balance />
-            </Scene3D>
-          </div>
-          
+        <div className="neo-card bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto">
           {/* Header */}
           <div className="bg-accent p-8 relative">
             <button
               onClick={() => setShowDeveloperModal(false)}
-              className="absolute top-4 right-4 neo-btn p-2 bg-white text-text-primary hover:bg-light-hover z-20"
+              className="absolute top-4 right-4 neo-btn p-2 bg-white text-text-primary hover:bg-light-hover"
             >
               ✕
             </button>
 
-            <div className="flex items-start space-x-6 relative z-10">
+            <div className="flex items-start space-x-6">
               <div className="relative">
                 <img 
                   src={selectedDeveloper.avatar_url}
@@ -550,7 +514,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
             </div>
           </div>
 
-          <div className="p-8 relative z-10">
+          <div className="p-8">
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
               <div className="neo-card bg-white p-4 text-center">
@@ -598,17 +562,10 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
                 <h3 className="text-xl font-bold text-text-primary mb-4">Projects</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {selectedDeveloper.projects.map((project, index) => (
-                    <div key={index} className="neo-card bg-white p-4 relative overflow-hidden">
-                      {/* Small 3D Animation */}
-                      <div className="absolute top-2 right-2 w-12 h-12 opacity-20">
-                        <Scene3D>
-                          {index % 2 === 0 ? <Stagger /> : <Balance />}
-                        </Scene3D>
-                      </div>
-                      
-                      <h4 className="font-semibold text-text-primary mb-2 relative z-10">{project.title}</h4>
-                      <p className="text-text-secondary text-sm mb-3 line-clamp-2 relative z-10">{project.description}</p>
-                      <div className="flex items-center justify-between relative z-10">
+                    <div key={index} className="neo-card bg-white p-4">
+                      <h4 className="font-semibold text-text-primary mb-2">{project.title}</h4>
+                      <p className="text-text-secondary text-sm mb-3 line-clamp-2">{project.description}</p>
+                      <div className="flex items-center justify-between">
                         <span className="neo-btn bg-white px-2 py-1 text-xs font-medium">
                           {project.category}
                         </span>
@@ -645,10 +602,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
   };
 
   return (
-    <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'} relative`}>
-      {/* 3D Canvas */}
-      <Scene3DCanvas />
-      
+    <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
       {/* Header */}
       <header className="bg-white/95 backdrop-blur-md border-b border-light-border sticky top-0 z-40 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -661,15 +615,8 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
                 ←
               </button>
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg relative">
+                <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center shadow-lg">
                   <ShoppingBag size={24} className="text-white" />
-                  
-                  {/* 3D Animation */}
-                  <div className="absolute top-0 right-0 w-full h-full opacity-20">
-                    <Scene3D>
-                      <Pie />
-                    </Scene3D>
-                  </div>
                 </div>
                 <div>
                   <h1 className="text-3xl font-bold text-text-primary">IP Marketplace</h1>
@@ -775,7 +722,7 @@ const Marketplace: React.FC<MarketplaceProps> = ({ onBack }) => {
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeTab === 'projects' ? (
           <div className={`grid gap-6 ${
             viewMode === 'grid' 

@@ -51,11 +51,6 @@ import {
 import { demoProjects, getTrendingProjects } from '../data/demoProjects';
 import MCPAssistant from './MCPAssistant';
 import AuctionSystem from './AuctionSystem';
-import { Scene3D, Scene3DCanvas } from './3d/Scene3D';
-import { Stagger } from './3d/animations/Stagger';
-import { Travel } from './3d/animations/Travel';
-import { Rubik } from './3d/animations/Rubik';
-import { Arrows } from './3d/animations/Arrows';
 
 interface AnalyticsProps {
   onBack: () => void;
@@ -131,8 +126,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
       color: 'text-success',
       bgColor: 'bg-success/10',
       borderColor: 'border-success/20',
-      description: 'Total amount invested across all funds',
-      animation: Stagger
+      description: 'Total amount invested across all funds'
     },
     {
       title: 'Active Users',
@@ -143,8 +137,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
       color: 'text-primary',
       bgColor: 'bg-primary/10',
       borderColor: 'border-primary/20',
-      description: 'Monthly active users on the platform',
-      animation: Travel
+      description: 'Monthly active users on the platform'
     },
     {
       title: 'Average Return Rate',
@@ -155,8 +148,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
       color: 'text-secondary',
       bgColor: 'bg-secondary/10',
       borderColor: 'border-secondary/20',
-      description: 'Average portfolio return rate',
-      animation: Rubik
+      description: 'Average portfolio return rate'
     },
     {
       title: 'Platform Growth',
@@ -167,8 +159,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
       color: 'text-accent',
       bgColor: 'bg-accent/10',
       borderColor: 'border-accent/20',
-      description: 'Month-over-month platform growth',
-      animation: Arrows
+      description: 'Month-over-month platform growth'
     }
   ];
 
@@ -210,10 +201,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
   };
 
   return (
-    <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'} relative`}>
-      {/* 3D Canvas */}
-      <Scene3DCanvas />
-      
+    <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
       {/* Header */}
       <header className="bg-white/95 backdrop-blur-md border-b border-light-border sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -320,19 +308,12 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {activeView === 'overview' && (
           <>
             {/* MCP Insights Banner */}
             <div className="mb-12 bg-primary/10 rounded-2xl border border-primary/20 p-8 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full -translate-y-32 translate-x-32"></div>
-              
-              {/* 3D Animation */}
-              <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-                <Scene3D>
-                  <Stagger />
-                </Scene3D>
-              </div>
               
               <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between space-y-6 lg:space-y-0">
                 <div className="flex items-center space-x-6">
@@ -361,18 +342,11 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
               </div>
             </div>
 
-            {/* KPI Cards with 3D Animations */}
+            {/* KPI Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12">
               {kpis.map((kpi, index) => (
-                <div key={kpi.title} className={`bg-white rounded-2xl border ${kpi.borderColor} p-8 card-hover stagger-item shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden`} style={{ animationDelay: `${index * 0.1}s` }}>
-                  {/* 3D Animation */}
-                  <div className="absolute top-2 right-2 w-20 h-20 opacity-20">
-                    <Scene3D>
-                      <kpi.animation />
-                    </Scene3D>
-                  </div>
-                  
-                  <div className="flex items-center justify-between mb-6 relative z-10">
+                <div key={kpi.title} className={`bg-white rounded-2xl border ${kpi.borderColor} p-8 card-hover stagger-item shadow-sm hover:shadow-lg transition-all duration-300`} style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="flex items-center justify-between mb-6">
                     <div className={`p-4 rounded-xl ${kpi.bgColor}`}>
                       <kpi.icon className={`w-8 h-8 ${kpi.color}`} />
                     </div>
@@ -387,7 +361,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                       <span>{kpi.change}</span>
                     </div>
                   </div>
-                  <div className="relative z-10">
+                  <div>
                     <h3 className="text-3xl font-bold text-text-primary mb-2">{kpi.value}</h3>
                     <p className="text-text-secondary font-medium mb-2">{kpi.title}</p>
                     <p className="text-text-muted text-sm">{kpi.description}</p>
@@ -398,15 +372,8 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
 
             {/* Nouns-Style Leaderboard */}
             {showLeaderboard && (
-              <div className="mb-12 bg-white rounded-2xl border border-light-border p-8 shadow-lg relative overflow-hidden">
-                {/* 3D Animation */}
-                <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-                  <Scene3D>
-                    <Travel />
-                  </Scene3D>
-                </div>
-                
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 relative z-10">
+              <div className="mb-12 bg-white rounded-2xl border border-light-border p-8 shadow-lg">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8">
                   <div className="flex items-center space-x-4 mb-4 lg:mb-0">
                     <div className="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center shadow-lg">
                       <Crown size={32} className="text-white" />
@@ -432,15 +399,8 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                 </div>
                 
                 {/* Current Noun Auction - Nouns DAO Style */}
-                <div className="bg-accent rounded-xl p-6 mb-8 border border-light-border relative overflow-hidden">
-                  {/* 3D Animation */}
-                  <div className="absolute top-2 right-2 w-24 h-24 opacity-20">
-                    <Scene3D>
-                      <Rubik />
-                    </Scene3D>
-                  </div>
-                  
-                  <div className="flex flex-col lg:flex-row items-center gap-8 relative z-10">
+                <div className="bg-accent rounded-xl p-6 mb-8 border border-light-border">
+                  <div className="flex flex-col lg:flex-row items-center gap-8">
                     <div className="w-40 h-40 relative">
                       {generateNounSvg(currentNounIndex)}
                       <div className="absolute -top-3 -right-3 w-10 h-10 bg-secondary rounded-full flex items-center justify-center text-white font-bold text-sm shadow-lg">
@@ -497,7 +457,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                 </div>
                 
                 {/* Leaderboard Table */}
-                <div className="overflow-hidden rounded-xl border border-light-border relative z-10">
+                <div className="overflow-hidden rounded-xl border border-light-border">
                   <table className="w-full">
                     <thead className="bg-light-card">
                       <tr>
@@ -566,15 +526,8 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
             {/* Main Analytics Grid */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-12">
               {/* Investment Performance */}
-              <div className="xl:col-span-2 bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                {/* 3D Animation */}
-                <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-                  <Scene3D>
-                    <Travel />
-                  </Scene3D>
-                </div>
-                
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 relative z-10">
+              <div className="xl:col-span-2 bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
                   <div className="flex items-center space-x-4 mb-4 sm:mb-0">
                     <div className="w-12 h-12 bg-success rounded-xl flex items-center justify-center">
                       <TrendingUp size={24} className="text-white" />
@@ -589,7 +542,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                   </button>
                 </div>
                 
-                <div className="space-y-6 relative z-10">
+                <div className="space-y-6">
                   {/* Investment Performance Data */}
                   {[
                     { fund: 'FinTech Innovation', invested: '$450K', current: '$623K', return: '+38.4%', investors: 156 },
@@ -623,15 +576,8 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
               </div>
 
               {/* MCP Insights */}
-              <div className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                {/* 3D Animation */}
-                <div className="absolute top-4 right-4 w-24 h-24 opacity-20">
-                  <Scene3D>
-                    <Arrows />
-                  </Scene3D>
-                </div>
-                
-                <div className="flex items-center space-x-4 mb-8 relative z-10">
+              <div className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center space-x-4 mb-8">
                   <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
                     <Brain size={24} className="text-white" />
                   </div>
@@ -641,7 +587,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                   </div>
                 </div>
                 
-                <div className="space-y-6 relative z-10">
+                <div className="space-y-6">
                   {mcpInsights.length > 0 ? (
                     mcpInsights.map((insight, index) => (
                       <div 
@@ -696,15 +642,8 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
             </div>
 
             {/* Real-time Activity Feed */}
-            <div className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-              {/* 3D Animation */}
-              <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-                <Scene3D>
-                  <Stagger />
-                </Scene3D>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 relative z-10">
+            <div className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8">
                 <div className="flex items-center space-x-4 mb-4 sm:mb-0">
                   <div className="w-12 h-12 bg-success rounded-xl flex items-center justify-center">
                     <Activity size={24} className="text-white" />
@@ -720,7 +659,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                   { label: 'Active Sessions', value: '1,234', icon: Eye, color: 'text-primary' },
                   { label: 'New Investments', value: '$45K', icon: DollarSign, color: 'text-success' },
@@ -763,24 +702,14 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                 {mcpInsights.map((insight) => (
                   <div 
                     key={insight.id} 
-                    className={`bg-white border rounded-2xl p-8 transition-all duration-300 hover:shadow-lg relative overflow-hidden ${
+                    className={`bg-white border rounded-2xl p-8 transition-all duration-300 hover:shadow-lg ${
                       insight.type === 'market' ? 'border-primary/20' :
                       insight.type === 'investment' ? 'border-success/20' :
                       insight.type === 'risk' ? 'border-error/20' :
                       'border-secondary/20'
                     }`}
                   >
-                    {/* 3D Animation - different for each insight type */}
-                    <div className="absolute top-2 right-2 w-20 h-20 opacity-20">
-                      <Scene3D>
-                        {insight.type === 'market' ? <Stagger /> : 
-                         insight.type === 'investment' ? <Travel /> : 
-                         insight.type === 'risk' ? <Arrows /> : 
-                         <Rubik />}
-                      </Scene3D>
-                    </div>
-                    
-                    <div className="flex items-center space-x-4 mb-6 relative z-10">
+                    <div className="flex items-center space-x-4 mb-6">
                       <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
                         insight.type === 'market' ? 'bg-primary/10' :
                         insight.type === 'investment' ? 'bg-success/10' :
@@ -798,7 +727,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                       </div>
                     </div>
 
-                    <div className="mb-6 relative z-10">
+                    <div className="mb-6">
                       {insight.type === 'market' && insight.data.trendingProjects && (
                         <div className="space-y-3">
                           <h4 className="font-semibold text-text-primary">Top Trending Projects</h4>
@@ -852,7 +781,7 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                       )}
                     </div>
 
-                    <div className="flex items-center justify-between text-sm relative z-10">
+                    <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center space-x-2 text-text-muted">
                         <Clock size={14} />
                         <span>{insight.timestamp.toLocaleString()}</span>
@@ -872,22 +801,15 @@ const EnhancedAnalytics: React.FC<AnalyticsProps> = ({ onBack }) => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-16 bg-white rounded-2xl border border-light-border relative overflow-hidden">
-                {/* 3D Animation */}
-                <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-                  <Scene3D>
-                    <Rubik />
-                  </Scene3D>
-                </div>
-                
-                <Brain size={64} className="mx-auto mb-6 text-text-muted opacity-50 relative z-10" />
-                <h3 className="text-2xl font-bold text-text-primary mb-3 relative z-10">No Insights Yet</h3>
-                <p className="text-text-secondary mb-8 max-w-md mx-auto relative z-10">
+              <div className="text-center py-16 bg-white rounded-2xl border border-light-border">
+                <Brain size={64} className="mx-auto mb-6 text-text-muted opacity-50" />
+                <h3 className="text-2xl font-bold text-text-primary mb-3">No Insights Yet</h3>
+                <p className="text-text-secondary mb-8 max-w-md mx-auto">
                   Use the MCP Assistant to generate AI-powered insights about market trends, investment opportunities, and risk assessments.
                 </p>
                 <button 
                   onClick={() => setShowMCPAssistant(true)}
-                  className="px-8 py-4 bg-primary rounded-xl text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 relative z-10"
+                  className="px-8 py-4 bg-primary rounded-xl text-white font-bold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                 >
                   Generate Insights Now
                 </button>

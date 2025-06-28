@@ -28,11 +28,6 @@ import {
   BarChart3,
   Activity
 } from 'lucide-react';
-import { Scene3D, Scene3DCanvas } from './3d/Scene3D';
-import { Rubik } from './3d/animations/Rubik';
-import { Balance } from './3d/animations/Balance';
-import { Arrows } from './3d/animations/Arrows';
-import { NewtonsCradle } from './3d/animations/NewtonsCradle';
 
 interface AboutPageProps {
   onBack: () => void;
@@ -69,7 +64,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
   const milestones = [
     {
       year: '2023',
-      title: 'Seedster Founded',
+      title: 'Seedora Founded',
       description: 'Started with a vision to protect developer IP and connect innovators with investors.'
     },
     {
@@ -98,35 +93,28 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
     {
       icon: Shield,
       title: 'Protection',
-      description: 'We believe every developer deserves to have their intellectual property protected.',
-      animation: Rubik
+      description: 'We believe every developer deserves to have their intellectual property protected.'
     },
     {
       icon: Lightbulb,
       title: 'Innovation',
-      description: 'We foster innovation by connecting great ideas with the resources they need to grow.',
-      animation: Balance
+      description: 'We foster innovation by connecting great ideas with the resources they need to grow.'
     },
     {
       icon: Users,
       title: 'Community',
-      description: 'We build a supportive community where developers and investors can thrive together.',
-      animation: Arrows
+      description: 'We build a supportive community where developers and investors can thrive together.'
     },
     {
       icon: Globe,
       title: 'Accessibility',
-      description: 'We make powerful tools accessible to developers worldwide, regardless of background.',
-      animation: NewtonsCradle
+      description: 'We make powerful tools accessible to developers worldwide, regardless of background.'
     }
   ];
 
   return (
-    <div className="min-h-screen bg-light-bg relative">
-      {/* 3D Canvas */}
-      <Scene3DCanvas />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative z-20">
+    <div className="min-h-screen bg-light-bg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Button */}
         <button
           onClick={onBack}
@@ -143,7 +131,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           
           <div className="relative z-10 text-center max-w-3xl mx-auto">
             <h1 className="text-4xl lg:text-6xl font-black mb-6">
-              About <span className="text-primary">Seedster</span>
+              About <span className="text-primary">Seedora</span>
             </h1>
             <p className="text-xl text-text-secondary mb-8">
               We're on a mission to democratize innovation by protecting intellectual property and connecting developers with investors.
@@ -170,7 +158,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Our Story</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              How Seedster went from an idea to a platform empowering developers worldwide
+              How Seedora went from an idea to a platform empowering developers worldwide
             </p>
           </div>
 
@@ -179,31 +167,24 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
               <div>
                 <h3 className="text-2xl font-bold text-text-primary mb-4">From Problem to Solution</h3>
                 <p className="text-text-secondary mb-6 leading-relaxed">
-                  Seedster was born from a simple observation: developers often struggle to protect their intellectual property and connect with the right investors to bring their ideas to life.
+                  Seedora was born from a simple observation: developers often struggle to protect their intellectual property and connect with the right investors to bring their ideas to life.
                 </p>
                 <p className="text-text-secondary mb-6 leading-relaxed">
                   Our founders, Sarah and James, experienced this firsthand when they developed an innovative AI platform but had no clear path to protect their work or find investment.
                 </p>
                 <p className="text-text-secondary leading-relaxed">
-                  They created Seedster to solve these problems, building a platform that leverages blockchain technology for IP protection and AI-powered analytics to match projects with the right investors.
+                  They created Seedora to solve these problems, building a platform that leverages blockchain technology for IP protection and AI-powered analytics to match projects with the right investors.
                 </p>
               </div>
               <div className="relative">
                 <img 
                   src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&dpr=2" 
-                  alt="Seedster founding team"
+                  alt="Seedora founding team"
                   className="rounded-2xl shadow-lg"
                 />
                 <div className="absolute -bottom-4 -right-4 bg-white rounded-xl p-3 shadow-lg">
                   <div className="text-sm font-medium text-text-primary">Founded in 2023</div>
                   <div className="text-xs text-text-muted">San Francisco, CA</div>
-                </div>
-                
-                {/* 3D Animation */}
-                <div className="absolute -top-6 -right-6 w-32 h-32 opacity-30">
-                  <Scene3D>
-                    <Rubik />
-                  </Scene3D>
                 </div>
               </div>
             </div>
@@ -215,19 +196,12 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Mission & Values</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              The principles that guide everything we do at Seedster
+              The principles that guide everything we do at Seedora
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl border border-light-border p-8 shadow-sm mb-8 relative overflow-hidden">
-            {/* 3D Animation */}
-            <div className="absolute top-4 right-4 w-32 h-32 opacity-20">
-              <Scene3D>
-                <Balance />
-              </Scene3D>
-            </div>
-            
-            <div className="text-center max-w-3xl mx-auto relative z-10">
+          <div className="bg-white rounded-2xl border border-light-border p-8 shadow-sm mb-8">
+            <div className="text-center max-w-3xl mx-auto">
               <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
                 <Target size={32} className="text-white" />
               </div>
@@ -240,19 +214,12 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, index) => (
-              <div key={index} className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300 relative overflow-hidden">
-                {/* 3D Animation */}
-                <div className="absolute top-2 right-2 w-16 h-16 opacity-20">
-                  <Scene3D>
-                    <value.animation />
-                  </Scene3D>
-                </div>
-                
-                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6 relative z-10">
+              <div key={index} className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300">
+                <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-6">
                   <value.icon size={32} className="text-primary" />
                 </div>
-                <h3 className="text-xl font-bold text-text-primary mb-4 relative z-10">{value.title}</h3>
-                <p className="text-text-secondary leading-relaxed relative z-10">{value.description}</p>
+                <h3 className="text-xl font-bold text-text-primary mb-4">{value.title}</h3>
+                <p className="text-text-secondary leading-relaxed">{value.description}</p>
               </div>
             ))}
           </div>
@@ -263,24 +230,14 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Meet Our Team</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              The passionate people behind Seedster
+              The passionate people behind Seedora
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
-              <div key={index} className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300 text-center relative overflow-hidden">
-                {/* 3D Animation - different for each team member */}
-                <div className="absolute top-2 right-2 w-16 h-16 opacity-20">
-                  <Scene3D>
-                    {index === 0 ? <Rubik /> : 
-                     index === 1 ? <Balance /> : 
-                     index === 2 ? <Arrows /> : 
-                     <NewtonsCradle />}
-                  </Scene3D>
-                </div>
-                
-                <div className="relative mb-6 z-10">
+              <div key={index} className="bg-white rounded-2xl border border-light-border p-8 shadow-sm hover:shadow-lg transition-all duration-300 text-center">
+                <div className="relative mb-6">
                   <img 
                     src={member.avatar} 
                     alt={member.name}
@@ -302,7 +259,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Our Journey</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              Key milestones in Seedster's growth
+              Key milestones in Seedora's growth
             </p>
           </div>
 
@@ -317,20 +274,10 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                     <div className="md:w-1/2 mb-8 md:mb-0">
                       <div className={`bg-light-card rounded-xl p-6 border border-light-border shadow-sm ${
                         index % 2 === 0 ? 'md:mr-8' : 'md:ml-8'
-                      } relative overflow-hidden`}>
-                        {/* 3D Animation - alternating between different animations */}
-                        <div className="absolute top-2 right-2 w-16 h-16 opacity-20">
-                          <Scene3D>
-                            {index % 4 === 0 ? <Rubik /> : 
-                             index % 4 === 1 ? <Balance /> : 
-                             index % 4 === 2 ? <Arrows /> : 
-                             <NewtonsCradle />}
-                          </Scene3D>
-                        </div>
-                        
-                        <div className="text-sm font-bold text-primary mb-2 relative z-10">{milestone.year}</div>
-                        <h3 className="text-xl font-bold text-text-primary mb-2 relative z-10">{milestone.title}</h3>
-                        <p className="text-text-secondary relative z-10">{milestone.description}</p>
+                      }`}>
+                        <div className="text-sm font-bold text-primary mb-2">{milestone.year}</div>
+                        <h3 className="text-xl font-bold text-text-primary mb-2">{milestone.title}</h3>
+                        <p className="text-text-secondary">{milestone.description}</p>
                       </div>
                     </div>
                     
@@ -350,7 +297,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-text-primary mb-4">Get in Touch</h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              Have questions or want to learn more about Seedster?
+              Have questions or want to learn more about Seedora?
             </p>
           </div>
 
@@ -375,7 +322,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                     </div>
                     <div>
                       <h4 className="font-semibold text-text-primary mb-1">Email</h4>
-                      <p className="text-text-secondary">hello@seedster.dev</p>
+                      <p className="text-text-secondary">hello@seedora.dev</p>
                     </div>
                   </div>
                   
@@ -401,17 +348,9 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
                 </div>
               </div>
               
-              <div className="relative">
+              <div>
                 <h3 className="text-2xl font-bold text-text-primary mb-6">Send Us a Message</h3>
-                
-                {/* 3D Animation */}
-                <div className="absolute top-0 right-0 w-24 h-24 opacity-20">
-                  <Scene3D>
-                    <Arrows />
-                  </Scene3D>
-                </div>
-                
-                <form className="space-y-6 relative z-10">
+                <form className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-text-secondary mb-2">
                       Your Name
