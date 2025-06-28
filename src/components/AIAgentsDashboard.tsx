@@ -28,234 +28,74 @@ import {
   Lightbulb, 
   Layers
 } from 'lucide-react';
-import { 
-  AIAgentsService, 
-  initializeAIAgentsService, 
-  AIAgent, 
-  AgentTask, 
-  AgentPerformanceMetrics, 
-  AgentType, 
-  AgentCapability 
-} from '../lib/aiagents';
 
 interface AIAgentsDashboardProps {
   onBack: () => void;
 }
 
 const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
-  const [aiAgentsService, setAIAgentsService] = useState<AIAgentsService | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'agents' | 'tasks' | 'analytics'>('overview');
-  
-  // AI Agents data states
-  const [availableAgents, setAvailableAgents] = useState<AIAgent[]>([]);
-  const [agentTasks, setAgentTasks] = useState<AgentTask[]>([]);
-  const [performanceMetrics, setPerformanceMetrics] = useState<AgentPerformanceMetrics | null>(null);
-  
-  // Task execution states
-  const [selectedAgentId, setSelectedAgentId] = useState<string>('');
-  const [taskParameters, setTaskParameters] = useState<any>({});
   const [taskLoading, setTaskLoading] = useState(false);
   const [taskResult, setTaskResult] = useState<any>(null);
-  
-  // DeFi analysis parameters
-  const [defiAnalysisParams, setDefiAnalysisParams] = useState({
-    assets: ['ETH', 'BTC', 'LINK'],
-    timeframe: '7d',
-    metrics: ['price', 'volume', 'sentiment']
-  });
-  
-  // Yield optimization parameters
-  const [yieldOptimizationParams, setYieldOptimizationParams] = useState({
-    initialAmount: 10000,
-    riskTolerance: 'medium' as 'low' | 'medium' | 'high',
-    timeHorizon: '6 months',
-    preferredAssets: ['ETH', 'USDC']
-  });
-  
-  // Multi-agent analysis parameters
-  const [multiAgentParams, setMultiAgentParams] = useState({
-    projectId: 'project-123',
-    projectData: {
-      title: 'AI-Powered FinTech Platform',
-      description: 'Revolutionary payment processing system with AI fraud detection and cross-border capabilities',
-      category: 'Fintech',
-      founderName: 'Sarah Johnson',
-      teamSize: 5,
-      githubRepo: 'sarahjohnson/fintech-ai',
-      demoLink: 'https://demo.fintech-ai.com'
-    },
-    analysisType: 'comprehensive' as 'comprehensive' | 'technical' | 'financial' | 'market',
-    agentCount: 5
-  });
 
   useEffect(() => {
-    initializeServices();
+    // Simulate loading
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    
+    return () => clearTimeout(timer);
   }, []);
 
-  const initializeServices = async () => {
-    try {
-      setIsLoading(true);
-      const service = initializeAIAgentsService();
-      setAIAgentsService(service);
-      
-      // Load initial data
-      await loadAIAgentsData(service);
-      
-    } catch (error) {
-      console.error('Error initializing AI Agents services:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const loadAIAgentsData = async (service: AIAgentsService) => {
-    try {
-      const [agents, tasks, metrics] = await Promise.all([
-        service.getAvailableAgents(),
-        service.getAgentTasksHistory(),
-        service.getAgentPerformanceMetrics()
-      ]);
-      
-      setAvailableAgents(agents);
-      setAgentTasks(tasks);
-      setPerformanceMetrics(metrics);
-      
-      // Set default selected agent
-      if (agents.length > 0 && !selectedAgentId) {
-        setSelectedAgentId(agents[0].id);
+  const executeTask = async () => {
+    setTaskLoading(true);
+    setTaskResult(null);
+    
+    // Simulate task execution
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    setTaskResult({
+      taskId: `task-${Date.now()}`,
+      status: 'completed',
+      result: {
+        marketTrend: 'bullish',
+        assetAnalysis: [
+          {
+            asset: 'ETH',
+            price: 3245.75,
+            priceChange: 2.3,
+            volume: 45000000,
+            marketCap: 389000000000,
+            sentiment: 'positive',
+            recommendation: 'buy'
+          },
+          {
+            asset: 'BTC',
+            price: 65432.18,
+            priceChange: 1.8,
+            volume: 78000000,
+            marketCap: 1250000000000,
+            sentiment: 'positive',
+            recommendation: 'hold'
+          },
+          {
+            asset: 'LINK',
+            price: 18.45,
+            priceChange: 3.5,
+            volume: 12000000,
+            marketCap: 9500000000,
+            sentiment: 'very positive',
+            recommendation: 'strong buy'
+          }
+        ],
+        riskAssessment: 'medium',
+        summary: 'Market analysis shows a positive outlook. Institutional investors are increasing positions while retail sentiment remains mixed.'
       }
-      
-    } catch (error) {
-      console.error('Error loading AI agents data:', error);
-    }
-  };
-
-  const refreshData = async () => {
-    if (!aiAgentsService) return;
-    await loadAIAgentsData(aiAgentsService);
-  };
-
-  const executeDeFiAnalysis = async () => {
-    if (!aiAgentsService) return;
+    });
     
-    try {
-      setTaskLoading(true);
-      setTaskResult(null);
-      
-      const result = await aiAgentsService.executeDeFiAnalysisTask(defiAnalysisParams);
-      
-      setTaskResult(result);
-    } catch (error) {
-      console.error('Error executing DeFi analysis:', error);
-    } finally {
-      setTaskLoading(false);
-    }
+    setTaskLoading(false);
   };
-
-  const executeYieldOptimization = async () => {
-    if (!aiAgentsService) return;
-    
-    try {
-      setTaskLoading(true);
-      setTaskResult(null);
-      
-      const result = await aiAgentsService.executeYieldOptimizationTask(yieldOptimizationParams);
-      
-      setTaskResult(result);
-    } catch (error) {
-      console.error('Error executing yield optimization:', error);
-    } finally {
-      setTaskLoading(false);
-    }
-  };
-
-  const executeMultiAgentAnalysis = async () => {
-    if (!aiAgentsService) return;
-    
-    try {
-      setTaskLoading(true);
-      setTaskResult(null);
-      
-      const result = await aiAgentsService.executeMultiAgentAnalysis(multiAgentParams);
-      
-      setTaskResult(result);
-    } catch (error) {
-      console.error('Error executing multi-agent analysis:', error);
-    } finally {
-      setTaskLoading(false);
-    }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
-
-  const formatPercentage = (value: number) => {
-    return `${value.toFixed(2)}%`;
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString();
-  };
-
-  const getAgentTypeLabel = (type: AgentType) => {
-    switch (type) {
-      case AgentType.DEFI:
-        return 'DeFi';
-      case AgentType.PRODUCTIVITY:
-        return 'Productivity';
-      case AgentType.MULTI_AGENT:
-        return 'Multi-Agent';
-      default:
-        return type;
-    }
-  };
-
-  const getAgentTypeColor = (type: AgentType) => {
-    switch (type) {
-      case AgentType.DEFI:
-        return 'text-primary';
-      case AgentType.PRODUCTIVITY:
-        return 'text-success';
-      case AgentType.MULTI_AGENT:
-        return 'text-secondary';
-      default:
-        return 'text-text-primary';
-    }
-  };
-
-  const getAgentTypeBgColor = (type: AgentType) => {
-    switch (type) {
-      case AgentType.DEFI:
-        return 'bg-primary/10';
-      case AgentType.PRODUCTIVITY:
-        return 'bg-success/10';
-      case AgentType.MULTI_AGENT:
-        return 'bg-secondary/10';
-      default:
-        return 'bg-gray-100';
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-light-bg flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <Brain size={32} className="text-white" />
-          </div>
-          <h2 className="text-2xl font-bold text-text-primary mb-2">Initializing AI Agents</h2>
-          <p className="text-text-secondary">Connecting to ElizaOS...</p>
-        </div>
-      </div>
-    );
-  }
 
   const renderOverview = () => (
     <div className="space-y-8">
@@ -281,7 +121,7 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                 <span className="font-semibold text-text-primary">Available Agents</span>
               </div>
               <div className="text-2xl font-bold text-primary">
-                {availableAgents.length}
+                7
               </div>
               <div className="text-sm text-text-secondary">Specialized AI agents</div>
             </div>
@@ -292,7 +132,7 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                 <span className="font-semibold text-text-primary">Tasks Completed</span>
               </div>
               <div className="text-2xl font-bold text-success">
-                {performanceMetrics ? performanceMetrics.totalTasksCompleted.toLocaleString() : '--'}
+                12,580
               </div>
               <div className="text-sm text-text-secondary">Total executions</div>
             </div>
@@ -303,7 +143,7 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                 <span className="font-semibold text-text-primary">Success Rate</span>
               </div>
               <div className="text-2xl font-bold text-secondary">
-                {performanceMetrics ? formatPercentage(performanceMetrics.successRate) : '--'}
+                98.2%
               </div>
               <div className="text-sm text-text-secondary">Task completion rate</div>
             </div>
@@ -324,7 +164,6 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
             </div>
           </div>
           <button
-            onClick={refreshData}
             className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-xl hover:scale-105 transition-all duration-300"
           >
             <RefreshCw size={18} />
@@ -348,23 +187,20 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
             <div className="space-y-3 mb-4">
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Available Agents:</span>
-                <span className="font-medium">{availableAgents.filter(a => a.type === AgentType.DEFI).length}</span>
+                <span className="font-medium">3</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Tasks Completed:</span>
-                <span className="font-medium">{performanceMetrics?.performanceByType[AgentType.DEFI].tasksCompleted.toLocaleString()}</span>
+                <span className="font-medium">5,200</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Avg. Performance:</span>
-                <span className="font-medium text-success">{formatPercentage(performanceMetrics?.performanceByType[AgentType.DEFI].averagePerformance || 0)}</span>
+                <span className="font-medium text-success">91.8%</span>
               </div>
             </div>
             
             <button 
-              onClick={() => {
-                setActiveTab('agents');
-                setSelectedAgentId(availableAgents.find(a => a.type === AgentType.DEFI)?.id || '');
-              }}
+              onClick={() => setActiveTab('agents')}
               className="flex items-center space-x-2 text-primary font-medium"
             >
               <span>View DeFi Agents</span>
@@ -387,23 +223,20 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
             <div className="space-y-3 mb-4">
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Available Agents:</span>
-                <span className="font-medium">{availableAgents.filter(a => a.type === AgentType.PRODUCTIVITY).length}</span>
+                <span className="font-medium">2</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Tasks Completed:</span>
-                <span className="font-medium">{performanceMetrics?.performanceByType[AgentType.PRODUCTIVITY].tasksCompleted.toLocaleString()}</span>
+                <span className="font-medium">6,100</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Avg. Performance:</span>
-                <span className="font-medium text-success">{formatPercentage(performanceMetrics?.performanceByType[AgentType.PRODUCTIVITY].averagePerformance || 0)}</span>
+                <span className="font-medium text-success">93.5%</span>
               </div>
             </div>
             
             <button 
-              onClick={() => {
-                setActiveTab('agents');
-                setSelectedAgentId(availableAgents.find(a => a.type === AgentType.PRODUCTIVITY)?.id || '');
-              }}
+              onClick={() => setActiveTab('agents')}
               className="flex items-center space-x-2 text-success font-medium"
             >
               <span>View Productivity Agents</span>
@@ -426,23 +259,20 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
             <div className="space-y-3 mb-4">
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Available Systems:</span>
-                <span className="font-medium">{availableAgents.filter(a => a.type === AgentType.MULTI_AGENT).length}</span>
+                <span className="font-medium">2</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Tasks Completed:</span>
-                <span className="font-medium">{performanceMetrics?.performanceByType[AgentType.MULTI_AGENT].tasksCompleted.toLocaleString()}</span>
+                <span className="font-medium">1,280</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-text-secondary">Avg. Performance:</span>
-                <span className="font-medium text-success">{formatPercentage(performanceMetrics?.performanceByType[AgentType.MULTI_AGENT].averagePerformance || 0)}</span>
+                <span className="font-medium text-success">92.2%</span>
               </div>
             </div>
             
             <button 
-              onClick={() => {
-                setActiveTab('agents');
-                setSelectedAgentId(availableAgents.find(a => a.type === AgentType.MULTI_AGENT)?.id || '');
-              }}
+              onClick={() => setActiveTab('agents')}
               className="flex items-center space-x-2 text-secondary font-medium"
             >
               <span>View Multi-Agent Systems</span>
@@ -486,11 +316,6 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                 </label>
                 <select
                   multiple
-                  value={defiAnalysisParams.assets}
-                  onChange={(e) => setDefiAnalysisParams({
-                    ...defiAnalysisParams,
-                    assets: Array.from(e.target.selectedOptions, option => option.value)
-                  })}
                   className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-text-primary"
                   size={3}
                 >
@@ -507,11 +332,6 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                   Timeframe
                 </label>
                 <select
-                  value={defiAnalysisParams.timeframe}
-                  onChange={(e) => setDefiAnalysisParams({
-                    ...defiAnalysisParams,
-                    timeframe: e.target.value
-                  })}
                   className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-text-primary"
                 >
                   <option value="24h">24 Hours</option>
@@ -523,7 +343,7 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
             </div>
             
             <button
-              onClick={executeDeFiAnalysis}
+              onClick={executeTask}
               disabled={taskLoading}
               className="w-full py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center space-x-2"
             >
@@ -560,11 +380,7 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                 </label>
                 <input
                   type="number"
-                  value={yieldOptimizationParams.initialAmount}
-                  onChange={(e) => setYieldOptimizationParams({
-                    ...yieldOptimizationParams,
-                    initialAmount: parseInt(e.target.value)
-                  })}
+                  defaultValue="10000"
                   className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-success/20 focus:border-success/50 text-text-primary"
                 />
               </div>
@@ -574,11 +390,6 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                   Risk Tolerance
                 </label>
                 <select
-                  value={yieldOptimizationParams.riskTolerance}
-                  onChange={(e) => setYieldOptimizationParams({
-                    ...yieldOptimizationParams,
-                    riskTolerance: e.target.value as 'low' | 'medium' | 'high'
-                  })}
                   className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-success/20 focus:border-success/50 text-text-primary"
                 >
                   <option value="low">Low Risk</option>
@@ -589,7 +400,7 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
             </div>
             
             <button
-              onClick={executeYieldOptimization}
+              onClick={executeTask}
               disabled={taskLoading}
               className="w-full py-3 bg-success text-white rounded-xl font-medium hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center space-x-2"
             >
@@ -625,11 +436,6 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                   Analysis Type
                 </label>
                 <select
-                  value={multiAgentParams.analysisType}
-                  onChange={(e) => setMultiAgentParams({
-                    ...multiAgentParams,
-                    analysisType: e.target.value as 'comprehensive' | 'technical' | 'financial' | 'market'
-                  })}
                   className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary/50 text-text-primary"
                 >
                   <option value="comprehensive">Comprehensive Analysis</option>
@@ -647,18 +453,14 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                   type="number"
                   min="3"
                   max="8"
-                  value={multiAgentParams.agentCount}
-                  onChange={(e) => setMultiAgentParams({
-                    ...multiAgentParams,
-                    agentCount: parseInt(e.target.value)
-                  })}
+                  defaultValue="5"
                   className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-secondary/20 focus:border-secondary/50 text-text-primary"
                 />
               </div>
             </div>
             
             <button
-              onClick={executeMultiAgentAnalysis}
+              onClick={executeTask}
               disabled={taskLoading}
               className="w-full py-3 bg-secondary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center space-x-2"
             >
@@ -742,195 +544,6 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
                     </div>
                   </div>
                 )}
-                
-                {/* Yield Optimization Result */}
-                {taskResult.result.recommendedStrategies && (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2 text-text-primary">
-                        <Zap size={18} className="text-success" />
-                        <span className="font-medium">Estimated APY: </span>
-                        <span className="font-bold text-success">
-                          {formatPercentage(taskResult.result.totalEstimatedAPY)}
-                        </span>
-                      </div>
-                      <div className="text-text-primary">
-                        <span className="font-medium">Estimated Annual Yield: </span>
-                        <span className="font-bold text-success">
-                          {formatCurrency(taskResult.result.totalEstimatedYield)}
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium text-text-primary mb-2">Recommended Strategies</h4>
-                      <div className="space-y-3">
-                        {taskResult.result.recommendedStrategies.map((strategy: any, index: number) => (
-                          <div key={index} className="bg-light-card rounded-lg p-4 border border-light-border">
-                            <div className="flex items-center justify-between mb-2">
-                              <div className="font-medium text-text-primary">
-                                {strategy.protocol} - {strategy.asset}
-                              </div>
-                              <div className="font-medium text-success">
-                                {formatPercentage(strategy.apy)} APY
-                              </div>
-                            </div>
-                            <div className="flex items-center justify-between text-sm">
-                              <div className="text-text-secondary">
-                                Chain: {strategy.chain}
-                              </div>
-                              <div className="text-text-secondary">
-                                Risk: {strategy.risk.toUpperCase()}
-                              </div>
-                              <div className="text-text-secondary">
-                                Allocation: {strategy.allocation}%
-                              </div>
-                              <div className="text-text-secondary">
-                                Est. Yield: {formatCurrency(strategy.estimatedYield)}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="bg-light-card rounded-lg p-4 border border-light-border">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-text-primary">Additional Information</h4>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          taskResult.result.riskAssessment === 'low' ? 'bg-success/20 text-success' :
-                          taskResult.result.riskAssessment === 'medium' ? 'bg-warning/20 text-warning' :
-                          'bg-error/20 text-error'
-                        }`}>
-                          {taskResult.result.riskAssessment.toUpperCase()} RISK
-                        </span>
-                      </div>
-                      <div className="text-text-secondary">
-                        <p>Rebalance Frequency: {taskResult.result.rebalanceFrequency}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                
-                {/* Multi-Agent Analysis Result */}
-                {taskResult.result.consensusScore && (
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2 text-text-primary">
-                        <Target size={18} className="text-primary" />
-                        <span className="font-medium">Consensus Score: </span>
-                        <span className={`font-bold ${
-                          taskResult.result.consensusScore > 80 ? 'text-success' :
-                          taskResult.result.consensusScore > 60 ? 'text-warning' :
-                          'text-error'
-                        }`}>
-                          {taskResult.result.consensusScore}/100
-                        </span>
-                      </div>
-                      <div className="text-text-primary">
-                        <span className="font-medium">Confidence Level: </span>
-                        <span className="font-bold text-primary">
-                          {taskResult.result.confidenceLevel}%
-                        </span>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h4 className="font-medium text-text-primary mb-2">Individual Agent Scores</h4>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {taskResult.result.individualScores.map((score: any, index: number) => (
-                          <div key={index} className="bg-light-card rounded-lg p-3 border border-light-border">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="font-medium text-text-primary">{score.agentName}</span>
-                              <span className={`font-medium ${
-                                score.score > 80 ? 'text-success' :
-                                score.score > 60 ? 'text-warning' :
-                                'text-error'
-                              }`}>
-                                {score.score}/100
-                              </span>
-                            </div>
-                            <div className="text-sm text-text-secondary">
-                              {score.reasoning}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-light-card rounded-lg p-4 border border-light-border">
-                        <h4 className="font-medium text-text-primary mb-2">Strengths & Weaknesses</h4>
-                        <div className="space-y-3">
-                          <div>
-                            <div className="text-sm font-medium text-success mb-1">Strengths:</div>
-                            <ul className="text-sm text-text-secondary space-y-1">
-                              {taskResult.result.strengthsWeaknesses.strengths.map((strength: string, i: number) => (
-                                <li key={i} className="flex items-start space-x-2">
-                                  <CheckCircle size={14} className="text-success mt-0.5 flex-shrink-0" />
-                                  <span>{strength}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium text-error mb-1">Weaknesses:</div>
-                            <ul className="text-sm text-text-secondary space-y-1">
-                              {taskResult.result.strengthsWeaknesses.weaknesses.map((weakness: string, i: number) => (
-                                <li key={i} className="flex items-start space-x-2">
-                                  <AlertTriangle size={14} className="text-error mt-0.5 flex-shrink-0" />
-                                  <span>{weakness}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-light-card rounded-lg p-4 border border-light-border">
-                        <h4 className="font-medium text-text-primary mb-2">Opportunities & Threats</h4>
-                        <div className="space-y-3">
-                          <div>
-                            <div className="text-sm font-medium text-primary mb-1">Opportunities:</div>
-                            <ul className="text-sm text-text-secondary space-y-1">
-                              {taskResult.result.strengthsWeaknesses.opportunities.map((opportunity: string, i: number) => (
-                                <li key={i} className="flex items-start space-x-2">
-                                  <Lightbulb size={14} className="text-primary mt-0.5 flex-shrink-0" />
-                                  <span>{opportunity}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div>
-                            <div className="text-sm font-medium text-warning mb-1">Threats:</div>
-                            <ul className="text-sm text-text-secondary space-y-1">
-                              {taskResult.result.strengthsWeaknesses.threats.map((threat: string, i: number) => (
-                                <li key={i} className="flex items-start space-x-2">
-                                  <AlertTriangle size={14} className="text-warning mt-0.5 flex-shrink-0" />
-                                  <span>{threat}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="bg-light-card rounded-lg p-4 border border-light-border">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-medium text-text-primary">Recommendation</h4>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                          taskResult.result.investmentRisk === 'low' ? 'bg-success/20 text-success' :
-                          taskResult.result.investmentRisk === 'medium' ? 'bg-warning/20 text-warning' :
-                          'bg-error/20 text-error'
-                        }`}>
-                          {taskResult.result.investmentRisk.toUpperCase()} RISK
-                        </span>
-                      </div>
-                      <p className="text-text-secondary">{taskResult.result.recommendation}</p>
-                    </div>
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -938,6 +551,20 @@ const AIAgentsDashboard: React.FC<AIAgentsDashboardProps> = ({ onBack }) => {
       </div>
     </div>
   );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-light-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <Brain size={32} className="text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-text-primary mb-2">Initializing AI Agents</h2>
+          <p className="text-text-secondary">Connecting to ElizaOS...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-light-bg">

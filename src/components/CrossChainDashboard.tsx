@@ -19,208 +19,23 @@ import {
   Users, 
   Activity
 } from 'lucide-react';
-import { 
-  CrossChainService, 
-  initializeCrossChainService, 
-  CrossChainTransaction, 
-  CrossChainLiquidityPool, 
-  CrossChainNFTBridge, 
-  SUPPORTED_CHAINS 
-} from '../lib/crosschain';
 
 interface CrossChainDashboardProps {
   onBack: () => void;
 }
 
 const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => {
-  const [crossChainService, setCrossChainService] = useState<CrossChainService | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'overview' | 'transactions' | 'liquidity' | 'nft-bridge'>('overview');
-  
-  // Cross-chain data states
-  const [transactions, setTransactions] = useState<CrossChainTransaction[]>([]);
-  const [liquidityPools, setLiquidityPools] = useState<CrossChainLiquidityPool[]>([]);
-  const [nftBridges, setNftBridges] = useState<CrossChainNFTBridge[]>([]);
-  const [supportedChains, setSupportedChains] = useState<any[]>([]);
-  
-  // Form states
-  const [transferForm, setTransferForm] = useState({
-    sourceChain: 'ethereum',
-    destinationChain: 'polygon',
-    token: 'USDC',
-    amount: '',
-    receiver: '0x...'
-  });
-  const [transferLoading, setTransferLoading] = useState(false);
-  const [transferResult, setTransferResult] = useState<any>(null);
-  
-  const [nftBridgeForm, setNftBridgeForm] = useState({
-    sourceChain: 'ethereum',
-    destinationChain: 'polygon',
-    nftContract: '0x...',
-    tokenId: ''
-  });
-  const [nftBridgeLoading, setNftBridgeLoading] = useState(false);
-  const [nftBridgeResult, setNftBridgeResult] = useState<any>(null);
-  
-  const [liquidityForm, setLiquidityForm] = useState({
-    sourceChain: 'ethereum',
-    destinationChain: 'polygon',
-    token: 'USDC',
-    amount: ''
-  });
-  const [liquidityLoading, setLiquidityLoading] = useState(false);
-  const [liquidityResult, setLiquidityResult] = useState<any>(null);
 
   useEffect(() => {
-    initializeServices();
-  }, []);
-
-  const initializeServices = async () => {
-    try {
-      setIsLoading(true);
-      const service = await initializeCrossChainService();
-      setCrossChainService(service);
-      
-      // Load initial data
-      await loadCrossChainData(service);
-      
-    } catch (error) {
-      console.error('Error initializing Cross-Chain services:', error);
-    } finally {
+    // Simulate loading
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    }
-  };
-
-  const loadCrossChainData = async (service: CrossChainService) => {
-    try {
-      const [txs, pools, bridges] = await Promise.all([
-        service.getCrossChainTransactions(),
-        service.getCrossChainLiquidityPools(),
-        service.getCrossChainNFTBridges()
-      ]);
-      
-      setTransactions(txs);
-      setLiquidityPools(pools);
-      setNftBridges(bridges);
-      setSupportedChains(service.getSupportedChains());
-      
-    } catch (error) {
-      console.error('Error loading cross-chain data:', error);
-    }
-  };
-
-  const refreshData = async () => {
-    if (!crossChainService) return;
-    await loadCrossChainData(crossChainService);
-  };
-
-  const handleTransfer = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!crossChainService || !transferForm.amount || parseFloat(transferForm.amount) <= 0) return;
+    }, 1500);
     
-    try {
-      setTransferLoading(true);
-      setTransferResult(null);
-      
-      const result = await crossChainService.simulateCrossChainTransfer(
-        transferForm.sourceChain,
-        transferForm.destinationChain,
-        transferForm.token,
-        parseFloat(transferForm.amount),
-        transferForm.receiver
-      );
-      
-      setTransferResult(result);
-    } catch (error) {
-      console.error('Error making cross-chain transfer:', error);
-    } finally {
-      setTransferLoading(false);
-    }
-  };
-
-  const handleNFTBridge = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!crossChainService || !nftBridgeForm.tokenId) return;
-    
-    try {
-      setNftBridgeLoading(true);
-      setNftBridgeResult(null);
-      
-      const result = await crossChainService.simulateCrossChainNFTBridge(
-        nftBridgeForm.sourceChain,
-        nftBridgeForm.destinationChain,
-        nftBridgeForm.nftContract,
-        nftBridgeForm.tokenId
-      );
-      
-      setNftBridgeResult(result);
-    } catch (error) {
-      console.error('Error bridging NFT:', error);
-    } finally {
-      setNftBridgeLoading(false);
-    }
-  };
-
-  const handleAddLiquidity = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!crossChainService || !liquidityForm.amount || parseFloat(liquidityForm.amount) <= 0) return;
-    
-    try {
-      setLiquidityLoading(true);
-      setLiquidityResult(null);
-      
-      const result = await crossChainService.simulateAddLiquidity(
-        liquidityForm.sourceChain,
-        liquidityForm.destinationChain,
-        liquidityForm.token,
-        parseFloat(liquidityForm.amount)
-      );
-      
-      setLiquidityResult(result);
-    } catch (error) {
-      console.error('Error adding liquidity:', error);
-    } finally {
-      setLiquidityLoading(false);
-    }
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
-
-  const formatPercentage = (value: number) => {
-    return `${value.toFixed(2)}%`;
-  };
-
-  const getChainName = (chainId: string) => {
-    const chain = supportedChains.find(c => c.id === chainId);
-    return chain ? chain.name : chainId;
-  };
-
-  const getChainIcon = (chainId: string) => {
-    const chain = supportedChains.find(c => c.id === chainId);
-    return chain ? chain.icon : '🔗';
-  };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-light-bg flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <Globe size={32} className="text-white" />
-          </div>
-          <h2 className="text-2xl font-bold text-text-primary mb-2">Initializing Cross-Chain Services</h2>
-          <p className="text-text-secondary">Connecting to multiple blockchains...</p>
-        </div>
-      </div>
-    );
-  }
+    return () => clearTimeout(timer);
+  }, []);
 
   const renderOverview = () => (
     <div className="space-y-8">
@@ -246,7 +61,7 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
                 <span className="font-semibold text-text-primary">Transactions</span>
               </div>
               <div className="text-2xl font-bold text-primary">
-                {transactions.length}
+                24
               </div>
               <div className="text-sm text-text-secondary">Cross-chain messages</div>
             </div>
@@ -257,7 +72,7 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
                 <span className="font-semibold text-text-primary">Liquidity</span>
               </div>
               <div className="text-2xl font-bold text-success">
-                {liquidityPools.length > 0 ? formatCurrency(liquidityPools.reduce((sum, pool) => sum + pool.totalLiquidity, 0)) : '--'}
+                $12.5M
               </div>
               <div className="text-sm text-text-secondary">Total locked value</div>
             </div>
@@ -268,7 +83,7 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
                 <span className="font-semibold text-text-primary">NFT Bridge</span>
               </div>
               <div className="text-2xl font-bold text-secondary">
-                {nftBridges.length > 0 ? nftBridges.reduce((sum, bridge) => sum + bridge.totalBridged, 0).toLocaleString() : '--'}
+                12,500
               </div>
               <div className="text-sm text-text-secondary">Total NFTs bridged</div>
             </div>
@@ -289,7 +104,6 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
             </div>
           </div>
           <button
-            onClick={refreshData}
             className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-xl hover:scale-105 transition-all duration-300"
           >
             <RefreshCw size={18} />
@@ -298,11 +112,17 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {supportedChains.map((chain, index) => (
+          {['Ethereum', 'Polygon', 'Arbitrum', 'Optimism', 'Avalanche'].map((chain, index) => (
             <div key={index} className="bg-light-card rounded-xl p-6 border border-light-border text-center">
-              <div className="text-3xl mb-3">{chain.icon}</div>
-              <h3 className="font-bold text-text-primary mb-1">{chain.name}</h3>
-              <p className="text-text-muted text-sm">Chain ID: {chain.chainId}</p>
+              <div className="text-3xl mb-3">
+                {index === 0 ? '🔷' : 
+                 index === 1 ? '🟣' : 
+                 index === 2 ? '🔵' : 
+                 index === 3 ? '🔴' : 
+                 '❄️'}
+              </div>
+              <h3 className="font-bold text-text-primary mb-1">{chain}</h3>
+              <p className="text-text-muted text-sm">Chain ID: {index + 1}</p>
               <div className="mt-3 flex items-center justify-center space-x-2 text-success text-sm">
                 <CheckCircle size={14} />
                 <span>Connected</span>
@@ -324,22 +144,20 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
           </div>
         </div>
         
-        <form onSubmit={handleTransfer} className="space-y-6">
+        <form className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-2">
                 Source Chain
               </label>
               <select
-                value={transferForm.sourceChain}
-                onChange={(e) => setTransferForm({...transferForm, sourceChain: e.target.value})}
                 className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-text-primary"
               >
-                {supportedChains.map((chain, index) => (
-                  <option key={index} value={chain.id}>
-                    {chain.icon} {chain.name}
-                  </option>
-                ))}
+                <option value="ethereum">🔷 Ethereum</option>
+                <option value="polygon">🟣 Polygon</option>
+                <option value="arbitrum">🔵 Arbitrum</option>
+                <option value="optimism">🔴 Optimism</option>
+                <option value="avalanche">❄️ Avalanche</option>
               </select>
             </div>
             
@@ -348,18 +166,13 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
                 Destination Chain
               </label>
               <select
-                value={transferForm.destinationChain}
-                onChange={(e) => setTransferForm({...transferForm, destinationChain: e.target.value})}
                 className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-text-primary"
               >
-                {supportedChains
-                  .filter(chain => chain.id !== transferForm.sourceChain)
-                  .map((chain, index) => (
-                    <option key={index} value={chain.id}>
-                      {chain.icon} {chain.name}
-                    </option>
-                  ))
-                }
+                <option value="polygon">🟣 Polygon</option>
+                <option value="ethereum">🔷 Ethereum</option>
+                <option value="arbitrum">🔵 Arbitrum</option>
+                <option value="optimism">🔴 Optimism</option>
+                <option value="avalanche">❄️ Avalanche</option>
               </select>
             </div>
             
@@ -368,8 +181,6 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
                 Token
               </label>
               <select
-                value={transferForm.token}
-                onChange={(e) => setTransferForm({...transferForm, token: e.target.value})}
                 className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-text-primary"
               >
                 <option value="USDC">USDC</option>
@@ -386,8 +197,6 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
               </label>
               <input
                 type="number"
-                value={transferForm.amount}
-                onChange={(e) => setTransferForm({...transferForm, amount: e.target.value})}
                 placeholder="0.0"
                 className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-text-primary"
                 required
@@ -400,8 +209,6 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
               </label>
               <input
                 type="text"
-                value={transferForm.receiver}
-                onChange={(e) => setTransferForm({...transferForm, receiver: e.target.value})}
                 placeholder="0x..."
                 className="w-full px-4 py-3 bg-white border border-light-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-text-primary"
                 required
@@ -410,53 +217,18 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
           </div>
           
           <div className="flex items-center justify-between text-sm text-text-secondary mb-6">
-            <div>Estimated Fee: {transferForm.sourceChain === 'ethereum' ? '0.015' : transferForm.sourceChain === 'polygon' ? '0.008' : '0.01'} ETH</div>
-            <div>Estimated Time: {transferForm.destinationChain === 'ethereum' ? '30' : transferForm.destinationChain === 'polygon' ? '20' : '15'} minutes</div>
+            <div>Estimated Fee: 0.015 ETH</div>
+            <div>Estimated Time: 20 minutes</div>
           </div>
           
           <button
             type="submit"
-            disabled={!transferForm.amount || parseFloat(transferForm.amount) <= 0 || transferForm.sourceChain === transferForm.destinationChain || transferLoading}
-            className="w-full py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100 flex items-center justify-center space-x-2"
+            className="w-full py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2"
           >
-            {transferLoading ? (
-              <>
-                <RefreshCw size={18} className="animate-spin" />
-                <span>Processing...</span>
-              </>
-            ) : (
-              <>
-                <Send size={18} />
-                <span>Send {transferForm.token} to {getChainName(transferForm.destinationChain)}</span>
-              </>
-            )}
+            <Send size={18} />
+            <span>Send USDC to Polygon</span>
           </button>
         </form>
-        
-        {transferResult && (
-          <div className={`mt-4 p-4 rounded-xl ${
-            transferResult.status !== 'failed' ? 'bg-success/10 border border-success/20' : 'bg-error/10 border border-error/20'
-          }`}>
-            <div className="flex items-center space-x-2 mb-2">
-              {transferResult.status !== 'failed' ? (
-                <CheckCircle size={18} className="text-success" />
-              ) : (
-                <AlertTriangle size={18} className="text-error" />
-              )}
-              <span className="font-medium">
-                {transferResult.status !== 'failed' ? 'Transfer Initiated Successfully' : 'Transfer Failed'}
-              </span>
-            </div>
-            {transferResult.status !== 'failed' && (
-              <div className="text-sm text-text-secondary">
-                <p>Message ID: {transferResult.messageId.slice(0, 10)}...{transferResult.messageId.slice(-8)}</p>
-                <p>Transaction Hash: {transferResult.txHash.slice(0, 10)}...{transferResult.txHash.slice(-8)}</p>
-                <p>Estimated Delivery Time: {transferResult.estimatedTime} minutes</p>
-                <p>Fee: {transferResult.fee} ETH</p>
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       {/* Recent Transactions */}
@@ -493,18 +265,36 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
               </tr>
             </thead>
             <tbody className="divide-y divide-light-border">
-              {transactions.slice(0, 5).map((tx, index) => (
+              {[
+                { source: 'Ethereum', destination: 'Polygon', amount: 1000, token: 'USDC', status: 'completed', time: '10:30 AM' },
+                { source: 'Polygon', destination: 'Arbitrum', amount: 500, token: 'LINK', status: 'completed', time: '9:15 AM' },
+                { source: 'Avalanche', destination: 'Ethereum', amount: 250, token: 'AVAX', status: 'pending', time: '8:45 AM' },
+                { source: 'Arbitrum', destination: 'Optimism', amount: 750, token: 'ETH', status: 'failed', time: '7:20 AM' },
+                { source: 'Ethereum', destination: 'Avalanche', amount: 1500, token: 'USDC', status: 'completed', time: 'Yesterday' }
+              ].map((tx, index) => (
                 <tr key={index} className="bg-white hover:bg-light-hover transition-colors duration-300">
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">{getChainIcon(tx.sourceChain.toLowerCase())}</span>
-                      <span className="font-medium text-text-primary">{tx.sourceChain}</span>
+                      <span className="text-lg">
+                        {tx.source === 'Ethereum' ? '🔷' : 
+                         tx.source === 'Polygon' ? '🟣' : 
+                         tx.source === 'Arbitrum' ? '🔵' : 
+                         tx.source === 'Optimism' ? '🔴' : 
+                         '❄️'}
+                      </span>
+                      <span className="font-medium text-text-primary">{tx.source}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center space-x-2">
-                      <span className="text-lg">{getChainIcon(tx.destinationChain.toLowerCase())}</span>
-                      <span className="font-medium text-text-primary">{tx.destinationChain}</span>
+                      <span className="text-lg">
+                        {tx.destination === 'Ethereum' ? '🔷' : 
+                         tx.destination === 'Polygon' ? '🟣' : 
+                         tx.destination === 'Arbitrum' ? '🔵' : 
+                         tx.destination === 'Optimism' ? '🔴' : 
+                         '❄️'}
+                      </span>
+                      <span className="font-medium text-text-primary">{tx.destination}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 font-medium text-text-primary">{tx.amount.toLocaleString()}</td>
@@ -519,7 +309,7 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
                     </span>
                   </td>
                   <td className="px-6 py-4 text-text-muted text-sm">
-                    {new Date(tx.timestamp).toLocaleTimeString()}
+                    {tx.time}
                   </td>
                 </tr>
               ))}
@@ -529,6 +319,20 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
       </div>
     </div>
   );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-light-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
+            <Globe size={32} className="text-white" />
+          </div>
+          <h2 className="text-2xl font-bold text-text-primary mb-2">Initializing Cross-Chain Services</h2>
+          <p className="text-text-secondary">Connecting to multiple blockchains...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-light-bg">
@@ -557,7 +361,7 @@ const CrossChainDashboard: React.FC<CrossChainDashboardProps> = ({ onBack }) => 
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 px-4 py-2 bg-success/10 rounded-xl text-success">
                 <CheckCircle size={16} />
-                <span className="text-sm font-medium">{supportedChains.length} Chains Connected</span>
+                <span className="text-sm font-medium">5 Chains Connected</span>
               </div>
             </div>
           </div>
