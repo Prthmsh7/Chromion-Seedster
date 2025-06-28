@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, 
   Users, 
@@ -269,21 +269,20 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => onNavigate('marketplace')}
               >
-                {/* Rank Badge */}
-                <div className={`absolute top-3 left-3 z-10 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
-                  index === 0 ? 'bg-secondary' :
-                  index === 1 ? 'bg-text-muted' :
-                  'bg-warning'
-                }`}>
-                  {index + 1}
-                </div>
-
                 <div className="relative">
                   <img 
                     src={project.image} 
                     alt={project.name}
                     className="w-full h-48 object-cover"
                   />
+                  <div className={`absolute top-3 left-3 z-10 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                    index === 0 ? 'bg-secondary' :
+                    index === 1 ? 'bg-text-muted' :
+                    'bg-warning'
+                  }`}>
+                    {index + 1}
+                  </div>
+
                   <div className="absolute top-3 right-3">
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       project.status === 'Hot' ? 'bg-error text-white' :

@@ -1,81 +1,50 @@
-import { useGSAP } from "@gsap/react";
-import { Center } from "@react-three/drei";
-import gsap from "gsap";
-import { useRef } from "react";
-import * as THREE from "three";
-import { CustomMaterial } from "../CustomMaterial";
+import { useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
 
 export const Balance = () => {
-  const ref1 = useRef<THREE.Mesh>(null);
-  const ref2 = useRef<THREE.Mesh>(null);
-  const groupRef = useRef<THREE.Group>(null);
+  const barRef = useRef<THREE.Mesh>(null);
+  const leftWeightRef = useRef<THREE.Mesh>(null);
+  const rightWeightRef = useRef<THREE.Mesh>(null);
 
-  useGSAP(() => {
-    if (!ref1.current || !ref2.current || !groupRef.current) return;
-
-    gsap
-      .timeline({
-        defaults: {
-          ease: "elastic",
-          repeat: -1,
-        },
-      })
-      .to(ref1.current.position, {
-        keyframes: [
-          {
-            x: -1.5,
-            duration: 2,
-          },
-          {
-            x: 1.5,
-            duration: 2,
-          },
-        ],
-        repeat: -1,
-      })
-      .to(
-        ref2.current.position,
-        {
-          keyframes: [
-            {
-              x: 1.5,
-              duration: 2,
-            },
-            {
-              x: -1.5,
-              duration: 2,
-            },
-          ],
-          repeat: -1,
-        },
-        0
-      )
-      .to(
-        groupRef.current.rotation,
-        {
-          z: `${Math.PI}`,
-          duration: 4,
-        },
-        0
-      );
-  }, []);
+  useFrame((state) => {
+    if (barRef.current && leftWeightRef.current && rightWeightRef.current) {
+      const time = state.clock.elapsedTime;
+      
+      // Make the bar tilt back and forth
+      barRef.current.rotation.z = Math.sin(time) * 0.2;
+      
+      // Move the weights up and down based on the bar's tilt
+      leftWeightRef.current.position.y = Math.sin(time) * 0.5 + 0.5;
+      rightWeightRef.current.position.y = -Math.sin(time) * 0.5 + 0.5;
+    }
+  });
 
   return (
-    <Center ref={groupRef}>
-      <mesh position={[1.5, 1, 0]} rotation={[Math.PI / 2, 0, 0]} ref={ref1}>
-        <cylinderGeometry args={[0.5, 0.5]}></cylinderGeometry>
-        <CustomMaterial></CustomMaterial>
+    <group>
+      {/* Balance bar */}
+      <mesh ref={barRef}>
+        <boxGeometry args={[3, 0.2, 0.2]} />
+        <meshStandardMaterial color="#9E9E9E" />
       </mesh>
-
-      <mesh>
-        <boxGeometry args={[4, 0.4, 1]}></boxGeometry>
-        <CustomMaterial></CustomMaterial>
+      
+      {/* Left weight */}
+      <mesh ref={leftWeightRef} position={[-1, 0.5, 0]}>
+        <sphereGeometry args={[0.4, 16, 16]} />
+        <meshStandardMaterial color="#2196F3" />
       </mesh>
-
-      <mesh position={[-1.5, -1, 0]} rotation={[Math.PI / 2, 0, 0]} ref={ref2}>
-        <cylinderGeometry args={[0.5, 0.5]}></cylinderGeometry>
-        <CustomMaterial></CustomMaterial>
+      
+      {/* Right weight */}
+      <mesh ref={rightWeightRef} position={[1, 0.5, 0]}>
+        <sphereGeometry args={[0.4, 16, 16]} />
+        <meshStandardMaterial color="#F44336" />
       </mesh>
-    </Center>
+      
+      {/* Stand */}
+      <mesh position={[0, -0.5, 0]}>
+        <cylinderGeometry args={[0.1, 0.3, 1, 16]} />
+        <meshStandardMaterial color="#9E9E9E" />
+      </mesh>
+    </group>
   );
 };
