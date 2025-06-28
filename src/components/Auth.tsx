@@ -187,7 +187,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
             
           } else {
             // User is immediately signed in (email confirmation disabled)
-            setSuccess('Account created and signed in successfully! Welcome to start.dev!');
+            setSuccess('Account created and signed in successfully! Welcome to Seedster!');
             
             // Create user profile
             try {
@@ -265,7 +265,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
                 <p className="text-text-secondary">
                   {isLogin 
                     ? 'Enter your email and password to access your account.'
-                    : 'Join start.dev to protect your IP and discover investment opportunities.'
+                    : 'Join Seedster to protect your IP and discover investment opportunities.'
                   }
                 </p>
               </div>

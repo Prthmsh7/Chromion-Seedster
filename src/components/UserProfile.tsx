@@ -35,8 +35,6 @@ import {
   Users,
   Lightbulb,
   Upload,
-  Video,
-  Link,
   Building,
   CheckCircle,
   Clock,
@@ -332,7 +330,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
           <div className="w-20 h-20 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
             <User size={32} className="text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-text-primary mb-4">Welcome to start.dev!</h2>
+          <h2 className="text-2xl font-bold text-text-primary mb-4">Welcome to Seedster!</h2>
           <p className="text-text-secondary text-lg mb-8 max-w-2xl mx-auto">
             Choose your role to get started. You can switch between roles anytime using the toggle above.
           </p>
@@ -363,7 +361,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
                 </div>
               </div>
               <div className="flex items-center justify-between mt-6">
-                <span className="text-primary font-medium">Get Started</span>
+                <span className="text-primary font-medium">Get Starte</span>
                 <ArrowRight size={20} className="text-primary group-hover:translate-x-1 transition-transform duration-300" />
               </div>
             </div>

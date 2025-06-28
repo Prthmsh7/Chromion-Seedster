@@ -155,7 +155,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         {/* Header */}
         <div className="mb-8 lg:mb-12">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-text-primary mb-3 lg:mb-4">
-            Welcome to <span className="text-primary">Seedora</span>
+            Welcome to <span className="text-primary">Seedster</span>
           </h1>
           <p className="text-text-secondary text-lg lg:text-xl max-w-3xl">
             Discover innovative projects, connect with founders, and invest in the future of technology.
@@ -297,7 +297,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 </div>
                 
                 <div className="p-6">
-                  <h4 className="font-semibold text-lg text-text-primary mb-2">
+                  <h4 className="font-semibold text-lg text-text-primary group-hover:text-primary transition-colors duration-300">
                     {project.name}
                   </h4>
                   <p className="text-text-secondary text-sm mb-4">by {project.founder}</p>

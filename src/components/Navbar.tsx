@@ -66,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, user, onShowAu
             <div className="flex items-center group cursor-pointer" onClick={() => handleNavClick('dashboard')}>
               <div className="relative">
                 <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black tracking-tight text-primary">
-                  Seedora
+                  Seedster
                 </h1>
                 <div className="absolute -bottom-1 sm:-bottom-1.5 lg:-bottom-2 left-0 w-full h-1 sm:h-1.5 lg:h-2 bg-secondary rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
               </div>
@@ -169,7 +169,7 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, user, onShowAu
                     {/* Footer */}
                     <div className="p-4 lg:p-6 border-t border-light-border text-center">
                       <p className="text-xs lg:text-sm text-text-muted">
-                        Seedora Platform • Version 2.1.0
+                        Seedster Platform • Version 2.1.0
                       </p>
                     </div>
                   </div>

@@ -80,7 +80,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
       role: 'AI Engineer',
       company: 'DataMind AI',
       avatar: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
-      quote: 'Seedora helped me protect my AI platform and connect with investors. The GitHub integration showcased my technical skills perfectly.',
+      quote: 'Seedster helped me protect my AI platform and connect with investors. The GitHub integration showcased my technical skills perfectly.',
       rating: 5
     },
     {
@@ -96,7 +96,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
       role: 'FinTech Founder',
       company: 'PayFlow Technologies',
       avatar: 'https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
-      quote: 'Found amazing investment opportunities through Seedora. The platform makes it easy to discover and evaluate innovative projects.',
+      quote: 'Found amazing investment opportunities through Seedster. The platform makes it easy to discover and evaluate innovative projects.',
       rating: 5
     }
   ];
@@ -160,7 +160,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
                 
                 <h1 className="text-5xl lg:text-7xl font-black leading-tight">
                   <span className="text-primary">
-                    Seedora
+                    Seedster
                   </span>
                 </h1>
                 
@@ -242,7 +242,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
               Everything you need to <span className="text-primary">succeed</span>
             </h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              From IP protection to investment opportunities, Seedora provides all the tools developers and investors need.
+              From IP protection to investment opportunities, Seedster provides all the tools developers and investors need.
             </p>
           </div>
 
@@ -271,7 +271,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl lg:text-5xl font-bold text-text-primary mb-6">
-              How <span className="text-primary">Seedora</span> works
+              How <span className="text-primary">Seedster</span> works
             </h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
               Get started in minutes with our simple three-step process
@@ -320,7 +320,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
               Loved by <span className="text-primary">developers</span> worldwide
             </h2>
             <p className="text-xl text-text-secondary max-w-3xl mx-auto">
-              See what our community has to say about their experience with Seedora
+              See what our community has to say about their experience with Seedster
             </p>
           </div>
 
@@ -414,7 +414,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
             Ready to protect your innovations?
           </h2>
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Join thousands of developers who trust Seedora to protect their intellectual property and connect with investors.
+            Join thousands of developers who trust Seedster to protect their intellectual property and connect with investors.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -441,7 +441,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <h3 className="text-2xl font-bold">
-                <span className="text-white">Seedora</span>
+                <span className="text-white">Seedster</span>
               </h3>
               <p className="text-white/80 leading-relaxed">
                 The ultimate platform for developers and investors to protect IP and discover innovations.
@@ -485,7 +485,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
           </div>
 
           <div className="border-t border-white/20 mt-12 pt-8 text-center text-white/60">
-            <p>&copy; 2024 Seedora. All rights reserved. Built with ❤️ for developers worldwide.</p>
+            <p>&copy; 2024 Seedster. All rights reserved. Built with ❤️ for developers worldwide.</p>
           </div>
         </div>
       </footer>
