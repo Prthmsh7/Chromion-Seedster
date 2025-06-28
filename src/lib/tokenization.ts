@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 // Tokenization contract addresses (Ethereum Sepolia testnet)
 export const TOKENIZATION_CONTRACTS = {
   // Real Estate Tokenization
-  REAL_ESTATE_REGISTRY: '0x5A9b0d9E323e9138A6E9DA8Dc2EAE3746C3Ea5e1',
+  REAL_ESTATE_REGISTRY: '0x5A9b0d9E323e9138A6E9DA8Dc2EAe3746C3Ea5e1',
   
   // Carbon Credits
   CARBON_CREDITS: '0x7C3d58A3Ed888B9187e155723F22EaC0c7ACe193',
