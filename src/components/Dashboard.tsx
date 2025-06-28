@@ -20,11 +20,15 @@ import {
   Network,
   Brain,
   Zap,
-  Globe
+  Globe,
+  Coins,
+  Layers,
+  Mountain,
+  Bot
 } from 'lucide-react';
 
 interface DashboardProps {
-  onNavigate: (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'chainlink' | 'about') => void;
+  onNavigate: (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'chainlink' | 'defi' | 'tokenization' | 'cross-chain' | 'ai-agents' | 'avalanche' | 'about') => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
@@ -191,6 +195,243 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Hackathon Tracks Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {/* Chainlink Track */}
+          <div className="neo-card bg-accent p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                  <Network size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary">Chainlink</h3>
+                  <p className="text-text-secondary text-sm">AI-powered oracles</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <Brain size={16} className="text-primary" />
+                  <span className="text-text-secondary">AI Scoring</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <DollarSign size={16} className="text-primary" />
+                  <span className="text-text-secondary">Dynamic Pricing</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Globe size={16} className="text-primary" />
+                  <span className="text-text-secondary">Cross-Chain CCIP</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => onNavigate('chainlink')}
+                className="w-full py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300"
+              >
+                Explore Chainlink
+              </button>
+            </div>
+          </div>
+          
+          {/* DeFi Track */}
+          <div className="neo-card bg-accent p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                  <Coins size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary">DeFi</h3>
+                  <p className="text-text-secondary text-sm">Decentralized finance</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <TrendingUp size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Yield Optimization</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Activity size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Derivatives & Perps</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Globe size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Cross-chain Lending</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => onNavigate('defi')}
+                className="w-full py-3 bg-secondary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300"
+              >
+                Explore DeFi
+              </button>
+            </div>
+          </div>
+          
+          {/* Tokenization Track */}
+          <div className="neo-card bg-accent p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                  <Layers size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary">Tokenization</h3>
+                  <p className="text-text-secondary text-sm">Real-world assets</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <Building size={16} className="text-primary" />
+                  <span className="text-text-secondary">Real Estate</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Award size={16} className="text-primary" />
+                  <span className="text-text-secondary">Carbon Credits</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Gamepad size={16} className="text-primary" />
+                  <span className="text-text-secondary">Game Assets</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => onNavigate('tokenization')}
+                className="w-full py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300"
+              >
+                Explore Tokenization
+              </button>
+            </div>
+          </div>
+          
+          {/* Cross-Chain Track */}
+          <div className="neo-card bg-accent p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                  <Globe size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary">Cross-Chain</h3>
+                  <p className="text-text-secondary text-sm">Multi-chain solutions</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <Coins size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Cross-chain DeFi</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Gamepad size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Multi-chain Gaming</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Layers size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Liquid Staking</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => onNavigate('cross-chain')}
+                className="w-full py-3 bg-secondary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300"
+              >
+                Explore Cross-Chain
+              </button>
+            </div>
+          </div>
+          
+          {/* AI Agents Track */}
+          <div className="neo-card bg-accent p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
+                  <Bot size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary">AI Agents</h3>
+                  <p className="text-text-secondary text-sm">ElizaOS powered</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <Coins size={16} className="text-primary" />
+                  <span className="text-text-secondary">DeFi Agents</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Activity size={16} className="text-primary" />
+                  <span className="text-text-secondary">Productivity Agents</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Users size={16} className="text-primary" />
+                  <span className="text-text-secondary">Multi-agent Systems</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => onNavigate('ai-agents')}
+                className="w-full py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300"
+              >
+                Explore AI Agents
+              </button>
+            </div>
+          </div>
+          
+          {/* Avalanche Track */}
+          <div className="neo-card bg-accent p-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full -translate-y-16 translate-x-16"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center space-x-3 mb-4">
+                <div className="w-12 h-12 bg-secondary rounded-xl flex items-center justify-center">
+                  <Mountain size={24} className="text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-text-primary">Avalanche</h3>
+                  <p className="text-text-secondary text-sm">High-performance blockchain</p>
+                </div>
+              </div>
+              
+              <div className="space-y-2 mb-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <Layers size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Single EVM Chain</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Globe size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Cross-Chain dApp</span>
+                </div>
+                <div className="flex items-center space-x-2 text-sm">
+                  <Rocket size={16} className="text-secondary" />
+                  <span className="text-text-secondary">Custom L1 Chain</span>
+                </div>
+              </div>
+              
+              <button 
+                onClick={() => onNavigate('avalanche')}
+                className="w-full py-3 bg-secondary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300"
+              >
+                Explore Avalanche
+              </button>
+            </div>
+          </div>
         </div>
 
         {/* Chainlink Integration Highlight */}
@@ -494,7 +735,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           
           <button 
             onClick={() => onNavigate('marketplace')}
-            className="neo-car bg-white p-8 text-left group"
+            className="neo-card bg-white p-8 text-left group"
           >
             <ShoppingBag className="w-10 h-10 text-secondary mb-4" />
             <h4 className="font-semibold text-xl text-text-primary mb-3">Explore Marketplace</h4>
@@ -514,5 +755,80 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
     </div>
   );
 };
+
+// Additional icons
+function Building(props: any) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+      <path d="M9 22v-4h6v4"></path>
+      <path d="M8 6h.01"></path>
+      <path d="M16 6h.01"></path>
+      <path d="M12 6h.01"></path>
+      <path d="M12 10h.01"></path>
+      <path d="M12 14h.01"></path>
+      <path d="M16 10h.01"></path>
+      <path d="M16 14h.01"></path>
+      <path d="M8 10h.01"></path>
+      <path d="M8 14h.01"></path>
+    </svg>
+  );
+}
+
+function Gamepad(props: any) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <line x1="6" y1="12" x2="10" y2="12"></line>
+      <line x1="8" y1="10" x2="8" y2="14"></line>
+      <line x1="15" y1="13" x2="15.01" y2="13"></line>
+      <line x1="18" y1="11" x2="18.01" y2="11"></line>
+      <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+    </svg>
+  );
+}
+
+function Rocket(props: any) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+    </svg>
+  );
+}
 
 export default Dashboard;
