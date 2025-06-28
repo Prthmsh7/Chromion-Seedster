@@ -19,12 +19,7 @@ import {
   ShoppingCart
 } from 'lucide-react';
 import { Scene3D, Scene3DCanvas } from './3d/Scene3D';
-import { Rings } from './3d/animations/Rings';
-import { Loop } from './3d/animations/Loop';
-import { Coins } from './3d/animations/Coins';
-import { Core } from './3d/animations/Core';
-import { Pulse } from './3d/animations/Pulse';
-import { Pie } from './3d/animations/Pie';
+import { Coin } from './3d/animations/Coin';
 
 interface DashboardProps {
   onNavigate: (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'about') => void;
@@ -40,7 +35,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       icon: Users,
       color: 'text-primary',
       bgColor: 'bg-accent',
-      animation: Rings
+      hasCoin: true
     },
     {
       title: 'Marketplace Volume',
@@ -49,8 +44,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       trend: 'up',
       icon: ShoppingBag,
       color: 'text-primary',
-      bgColor: 'bg-secondary',
-      animation: Loop
+      bgColor: 'bg-secondary'
     },
     {
       title: 'Total Investments',
@@ -59,8 +53,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       trend: 'up',
       icon: TrendingUp,
       color: 'text-primary',
-      bgColor: 'bg-accent',
-      animation: Coins
+      bgColor: 'bg-accent'
     },
     {
       title: 'Success Rate',
@@ -69,8 +62,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       trend: 'up',
       icon: Activity,
       color: 'text-primary',
-      bgColor: 'bg-secondary',
-      animation: Core
+      bgColor: 'bg-secondary'
     },
   ];
 
@@ -85,8 +77,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       status: 'Available',
       likes: 89,
       views: 1240,
-      image: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2',
-      animation: Pulse
+      image: 'https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2'
     },
     { 
       name: 'Sustainable Energy Tracker', 
@@ -98,8 +89,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       status: 'Available',
       likes: 67,
       views: 890,
-      image: 'https://images.pexels.com/photos/9800029/pexels-photo-9800029.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2',
-      animation: Pie
+      image: 'https://images.pexels.com/photos/9800029/pexels-photo-9800029.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2'
     },
     { 
       name: 'FinTech Payment Solution', 
@@ -111,8 +101,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       status: 'Hot',
       likes: 124,
       views: 1560,
-      image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2',
-      animation: Rings
+      image: 'https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2'
     },
     { 
       name: 'Healthcare Data Platform', 
@@ -124,8 +113,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       status: 'Available',
       likes: 78,
       views: 1120,
-      image: 'https://images.pexels.com/photos/3938023/pexels-photo-3938023.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2',
-      animation: Loop
+      image: 'https://images.pexels.com/photos/3938023/pexels-photo-3938023.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2'
     },
     { 
       name: 'EdTech Learning Assistant', 
@@ -137,8 +125,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       status: 'New',
       likes: 45,
       views: 670,
-      image: 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2',
-      animation: Coins
+      image: 'https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2'
     },
     { 
       name: 'Blockchain Security Protocol', 
@@ -150,8 +137,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       status: 'Premium',
       likes: 156,
       views: 2340,
-      image: 'https://images.pexels.com/photos/8369648/pexels-photo-8369648.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2',
-      animation: Core
+      image: 'https://images.pexels.com/photos/8369648/pexels-photo-8369648.jpeg?auto=compress&cs=tinysrgb&w=400&h=225&dpr=2'
     },
   ];
 
@@ -182,16 +168,18 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           </p>
         </div>
 
-        {/* Stats Grid with 3D Animations */}
+        {/* Stats Grid with 3D Coin Animation */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-12 lg:mb-16">
           {stats.map((stat, index) => (
             <div key={stat.title} className={`neo-card ${stat.bgColor} p-6 lg:p-8 stagger-item relative overflow-hidden`} style={{ animationDelay: `${index * 0.1}s` }}>
-              {/* 3D Animation */}
-              <div className="absolute top-2 right-2 w-16 h-16 opacity-20">
-                <Scene3D>
-                  <stat.animation />
-                </Scene3D>
-              </div>
+              {/* 3D Coin Animation - only for Active Projects */}
+              {stat.hasCoin && (
+                <div className="absolute top-2 right-2 w-16 h-16 opacity-30">
+                  <Scene3D>
+                    <Coin />
+                  </Scene3D>
+                </div>
+              )}
               
               <div className="flex items-center justify-between mb-6 relative z-10">
                 <div className={`p-4 rounded-xl bg-white border border-light-border`}>
@@ -218,13 +206,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
         {/* Quick Access to Marketplace */}
         <div className="neo-card bg-accent p-8 lg:p-10 mb-12 lg:mb-16 relative overflow-hidden">
-          {/* 3D Animation Background */}
-          <div className="absolute top-0 right-0 w-32 h-32 opacity-10">
-            <Scene3D>
-              <Pulse />
-            </Scene3D>
-          </div>
-          
           <div className="relative flex flex-col lg:flex-row lg:items-center justify-between space-y-6 lg:space-y-0 z-10">
             <div className="flex items-center space-x-6">
               <div className="neo-btn w-16 h-16 lg:w-20 h-20 bg-primary flex items-center justify-center">
@@ -249,13 +230,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {marketplaceHighlights.map((highlight, index) => (
             <div key={highlight.title} className="neo-card bg-white p-6 text-center stagger-item relative overflow-hidden" style={{ animationDelay: `${index * 0.1}s` }}>
-              {/* Small 3D Animation */}
-              <div className="absolute top-1 right-1 w-8 h-8 opacity-20">
-                <Scene3D>
-                  <Rings />
-                </Scene3D>
-              </div>
-              
               <div className={`w-12 h-12 bg-accent rounded-xl flex items-center justify-center mx-auto mb-4 border border-light-border relative z-10`}>
                 <highlight.icon size={24} className={highlight.color} />
               </div>
@@ -268,13 +242,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
         {/* Top Liked Projects Section */}
         <div className="neo-card bg-white p-8 lg:p-10 mb-12 relative overflow-hidden">
-          {/* 3D Animation Background */}
-          <div className="absolute top-4 right-4 w-24 h-24 opacity-10">
-            <Scene3D>
-              <Pie />
-            </Scene3D>
-          </div>
-          
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 lg:mb-10 relative z-10">
             <div className="flex items-center space-x-6 mb-6 lg:mb-0">
               <div className="neo-btn w-16 h-16 bg-error flex items-center justify-center">
@@ -309,13 +276,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                   'bg-warning'
                 }`}>
                   {index + 1}
-                </div>
-
-                {/* 3D Animation in corner */}
-                <div className="absolute top-2 right-2 w-12 h-12 opacity-30 z-10">
-                  <Scene3D>
-                    <project.animation />
-                  </Scene3D>
                 </div>
 
                 <div className="relative">
@@ -382,13 +342,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
         {/* Featured Projects */}
         <div className="neo-card bg-white p-8 lg:p-10 relative overflow-hidden">
-          {/* 3D Animation Background */}
-          <div className="absolute top-4 right-4 w-24 h-24 opacity-10">
-            <Scene3D>
-              <Core />
-            </Scene3D>
-          </div>
-          
           <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-8 lg:mb-10 relative z-10">
             <div className="flex items-center space-x-6 mb-6 lg:mb-0">
               <div className="neo-btn w-16 h-16 bg-secondary flex items-center justify-center">
@@ -417,13 +370,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => onNavigate('marketplace')}
               >
-                {/* 3D Animation in corner */}
-                <div className="absolute top-2 right-2 w-12 h-12 opacity-30 z-10">
-                  <Scene3D>
-                    <project.animation />
-                  </Scene3D>
-                </div>
-
                 <div className="relative">
                   <img 
                     src={project.image} 
@@ -493,12 +439,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('user-profile')}
             className="neo-card bg-white p-8 text-left group relative overflow-hidden"
           >
-            {/* 3D Animation */}
-            <div className="absolute top-2 right-2 w-12 h-12 opacity-20">
-              <Scene3D>
-                <Rings />
-              </Scene3D>
-            </div>
             <UserCheck className="w-10 h-10 text-primary mb-4 relative z-10" />
             <h4 className="font-semibold text-xl text-text-primary mb-3 relative z-10">Register Your Project</h4>
             <p className="text-text-secondary relative z-10">Protect your IP and showcase your innovation to investors</p>
@@ -508,12 +448,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('marketplace')}
             className="neo-card bg-white p-8 text-left group relative overflow-hidden"
           >
-            {/* 3D Animation */}
-            <div className="absolute top-2 right-2 w-12 h-12 opacity-20">
-              <Scene3D>
-                <Loop />
-              </Scene3D>
-            </div>
             <ShoppingBag className="w-10 h-10 text-secondary mb-4 relative z-10" />
             <h4 className="font-semibold text-xl text-text-primary mb-3 relative z-10">Explore Marketplace</h4>
             <p className="text-text-secondary relative z-10">Discover and invest in promising registered projects</p>
@@ -523,12 +457,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             onClick={() => onNavigate('analytics')}
             className="neo-card bg-white p-8 text-left group relative overflow-hidden"
           >
-            {/* 3D Animation */}
-            <div className="absolute top-2 right-2 w-12 h-12 opacity-20">
-              <Scene3D>
-                <Pulse />
-              </Scene3D>
-            </div>
             <BarChart3 className="w-10 h-10 text-accent mb-4 relative z-10" />
             <h4 className="font-semibold text-xl text-text-primary mb-3 relative z-10">View Analytics</h4>
             <p className="text-text-secondary relative z-10">Track performance and market insights</p>
