@@ -19,10 +19,7 @@
     "ethers": "^6.8.0",
     "@chainlink/contracts": "^0.8.0",
     "web3": "^4.3.0",
-    "@avalabs/avalanchejs": "^3.16.0",
-    "@tokenization/rwa-sdk": "^2.1.0",
-    "defi-sdk": "^1.2.0",
-    "cross-chain-toolkit": "^0.9.0"
+    "@avalabs/avalanchejs": "^3.16.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
