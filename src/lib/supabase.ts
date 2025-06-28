@@ -1,8 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
-
 // Create a mock client for development when env vars are not set
 const createMockClient = () => ({
   auth: {
@@ -26,13 +23,13 @@ const createMockClient = () => ({
 });
 
 // Check if Supabase is properly configured (not placeholder values)
-const isValidSupabaseConfig = supabaseUrl && 
-  supabaseAnonKey && 
-  !supabaseUrl.includes('your_supabase_project_url') &&
-  supabaseUrl.startsWith('https://');
+const isValidSupabaseConfig = process.env.VITE_SUPABASE_URL && 
+  process.env.VITE_SUPABASE_ANON_KEY && 
+  !process.env.VITE_SUPABASE_URL.includes('your_supabase_project_url') &&
+  process.env.VITE_SUPABASE_URL.startsWith('https://');
 
 export const supabase = isValidSupabaseConfig
-  ? createClient(supabaseUrl, supabaseAnonKey)
+  ? createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY)
   : createMockClient();
 
 export const isSupabaseConfigured = isValidSupabaseConfig;
