@@ -10,6 +10,9 @@ import {
   Filter,
   Search
 } from 'lucide-react';
+import { Scene3D, Scene3DCanvas } from './3d/Scene3D';
+import { NewtonsCradle } from './3d/animations/NewtonsCradle';
+import { Arrows } from './3d/animations/Arrows';
 
 interface InvestmentStreamProps {
   onBack: () => void;
@@ -154,14 +157,24 @@ const InvestmentStream: React.FC<InvestmentStreamProps> = ({ onBack }) => {
   const upNextVideos = filteredVideos.slice(currentVideoIndex + 1);
 
   return (
-    <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
+    <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'} relative`}>
+      {/* 3D Canvas */}
+      <Scene3DCanvas />
+      
       {/* Header - Responsive design */}
       <header className="bg-white border-b border-light-border sticky top-0 z-50 slide-in-left shadow-sm">
         <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-4 sm:py-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between space-y-4 lg:space-y-0">
             <div className="flex items-center space-x-3 sm:space-x-4">
-              <div className="w-8 h-8 sm:w-10 h-10 lg:w-12 h-12 bg-primary rounded-lg lg:rounded-xl flex items-center justify-center pulse-glow morph-shape">
+              <div className="w-8 h-8 sm:w-10 h-10 lg:w-12 h-12 bg-primary rounded-lg lg:rounded-xl flex items-center justify-center pulse-glow morph-shape relative">
                 <TrendingUp size={16} className="sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+                
+                {/* 3D Animation */}
+                <div className="absolute top-0 right-0 w-full h-full opacity-20">
+                  <Scene3D>
+                    <NewtonsCradle />
+                  </Scene3D>
+                </div>
               </div>
               <div>
                 <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-primary">Investment Stream</h1>
@@ -205,7 +218,13 @@ const InvestmentStream: React.FC<InvestmentStreamProps> = ({ onBack }) => {
 
       {/* Video Player - Responsive container */}
       {currentVideo && (
-        <div className="max-w-[1600px] mx-auto">
+        <div className="max-w-[1600px] mx-auto relative z-20">
+          <div className="absolute top-4 right-4 w-32 h-32 opacity-20 z-10">
+            <Scene3D>
+              <Arrows />
+            </Scene3D>
+          </div>
+          
           <VideoPlayer 
             video={currentVideo}
             upNextVideos={upNextVideos}
