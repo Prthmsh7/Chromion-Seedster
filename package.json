@@ -22,7 +22,8 @@
     "gsap": "^3.12.5",
     "three": "^0.166.1",
     "@types/three": "^0.166.0",
-    "zustand": "^4.5.4"
+    "zustand": "^4.5.4",
+    "lenis": "^1.1.13"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
