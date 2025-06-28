@@ -13,8 +13,8 @@ export class PinataService {
   private apiSecret: string;
 
   constructor() {
-    this.apiKey = import.meta.env.VITE_PINATA_API_KEY as string;
-    this.apiSecret = import.meta.env.VITE_PINATA_API_SECRET as string;
+    this.apiKey = process.env.VITE_PINATA_API_KEY || '';
+    this.apiSecret = process.env.VITE_PINATA_API_SECRET || '';
 
     if (!this.apiKey || !this.apiSecret) {
       console.warn('Pinata API credentials are not configured. IP registration will be simulated.');

@@ -193,13 +193,11 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
             try {
               const { error: profileError } = await supabase
                 .from('user_profiles')
-                .upsert({
+                .insert({
                   id: data.user.id,
                   email: email.trim().toLowerCase(),
                   full_name: fullName.trim(),
                   subscription_status: 'free'
-                }, {
-                  onConflict: 'id'
                 });
 
               if (profileError) {

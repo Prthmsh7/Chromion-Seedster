@@ -29,7 +29,7 @@ import {
   Building
 } from 'lucide-react';
 
-interface GitHubRepo {
+interface GitHubRepoProps {
   id: number;
   name: string;
   full_name: string;
@@ -72,8 +72,8 @@ interface GitHubUser {
 }
 
 interface GitHubIntegrationProps {
-  onRepoSelected?: (repo: GitHubRepo) => void;
-  selectedRepos?: GitHubRepo[];
+  onRepoSelected?: (repo: GitHubRepoProps) => void;
+  selectedRepos?: GitHubRepoProps[];
   maxRepos?: number;
 }
 
@@ -85,7 +85,7 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
   const [isConnected, setIsConnected] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [githubUser, setGithubUser] = useState<GitHubUser | null>(null);
-  const [repositories, setRepositories] = useState<GitHubRepo[]>([]);
+  const [repositories, setRepositories] = useState<GitHubRepoProps[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'stars' | 'updated' | 'created' | 'name'>('stars');
@@ -120,8 +120,7 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
 
     try {
       // For demo purposes, we'll simulate the OAuth flow
-      // In a real app, you'd redirect to GitHub OAuth
-      const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID;
+      const clientId = process.env.VITE_GITHUB_CLIENT_ID;
       
       if (!clientId) {
         // Fallback to demo mode with mock data
@@ -188,7 +187,7 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
         hireable: true
       };
 
-      const mockRepos: GitHubRepo[] = [
+      const mockRepos: GitHubRepoProps[] = [
         {
           id: 1,
           name: 'ai-analytics-platform',

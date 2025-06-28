@@ -225,47 +225,11 @@ export function IPRegistration({ walletAddress, onSuccess, selectedRepos = [] }:
 
       console.log('Inserting data into database:', dbData);
 
-      // First, let's verify the table structure
-      const { data: tableInfo, error: tableError } = await supabase
-        .from('ip_registrations')
-        .select('*')
-        .limit(0);
-
-      if (tableError) {
-        console.error('Table structure check failed:', tableError);
-        throw new Error(`Database table error: ${tableError.message}`);
-      }
-
-      console.log('Table structure verified, proceeding with insert...');
-
       // Save to Supabase with explicit column selection
       const { data: insertedData, error: dbError } = await supabase
         .from('ip_registrations')
         .insert([dbData])
-        .select(`
-          id,
-          user_id,
-          title,
-          description,
-          founder_name,
-          company_name,
-          category,
-          wallet_address,
-          ipfs_hash,
-          ipfs_url,
-          document_hash,
-          project_type,
-          business_model,
-          project_summary,
-          developers,
-          demo_link,
-          presentation_video,
-          github_repo,
-          status,
-          created_at,
-          updated_at
-        `)
-        .single();
+        .select();
 
       if (dbError) {
         console.error('Database error details:', dbError);

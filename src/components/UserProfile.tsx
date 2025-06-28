@@ -79,7 +79,7 @@ interface IPRegistration {
   github_repo?: string;
 }
 
-interface GitHubRepo {
+interface GitHubRepoProps {
   id: number;
   name: string;
   full_name: string;
@@ -93,6 +93,15 @@ interface GitHubRepo {
   updated_at: string;
   topics: string[];
   private: boolean;
+  size: number;
+  default_branch: string;
+  open_issues_count: number;
+  has_issues: boolean;
+  has_projects: boolean;
+  has_wiki: boolean;
+  archived: boolean;
+  disabled: boolean;
+  pushed_at: string;
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
@@ -105,7 +114,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
   const [loadingIPs, setLoadingIPs] = useState(false);
   const [showIPForm, setShowIPForm] = useState(false);
   const [projectsView, setProjectsView] = useState<'list' | 'form'>('list');
-  const [selectedRepos, setSelectedRepos] = useState<GitHubRepo[]>([]);
+  const [selectedRepos, setSelectedRepos] = useState<GitHubRepoProps[]>([]);
 
   const [profileData, setProfileData] = useState({
     name: user?.email?.split('@')[0] || 'User',
@@ -156,7 +165,6 @@ const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
       const { data, error } = await supabase
         .from('ip_registrations')
         .select('*')
-        .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -199,7 +207,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
     fetchIPRegistrations();
   };
 
-  const handleRepoSelected = (repo: GitHubRepo) => {
+  const handleRepoSelected = (repo: GitHubRepoProps) => {
     // Check if repo is already selected
     if (selectedRepos.some(r => r.id === repo.id)) {
       setSelectedRepos(selectedRepos.filter(r => r.id !== repo.id));
