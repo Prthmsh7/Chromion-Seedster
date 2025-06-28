@@ -561,8 +561,17 @@ export const initializeTokenizationService = async (): Promise<TokenizationServi
     // Try to connect to MetaMask or other Web3 provider
     if (typeof window !== 'undefined' && window.ethereum) {
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      return new TokenizationService(provider, signer);
+      
+      try {
+        // Try to get signer with nested try-catch for better error handling
+        const signer = await provider.getSigner();
+        return new TokenizationService(provider, signer);
+      } catch (signerError) {
+        // If getting signer fails (wallet locked, user rejected, etc.), 
+        // continue with read-only mode
+        console.log('Wallet connection not available, using read-only mode');
+        return new TokenizationService(provider);
+      }
     } else {
       // Fallback to read-only provider
       const provider = new ethers.JsonRpcProvider(

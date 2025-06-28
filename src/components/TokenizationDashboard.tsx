@@ -28,7 +28,8 @@ import {
   Lightbulb,
   Users,
   Zap,
-  Shield
+  Shield,
+  Brain
 } from 'lucide-react';
 import { 
   TokenizationService, 
