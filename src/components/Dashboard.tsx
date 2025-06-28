@@ -16,11 +16,15 @@ import {
   Heart,
   Eye,
   Crown,
-  ShoppingCart
+  ShoppingCart,
+  Network,
+  Brain,
+  Zap,
+  Globe
 } from 'lucide-react';
 
 interface DashboardProps {
-  onNavigate: (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'about') => void;
+  onNavigate: (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'chainlink' | 'about') => void;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
@@ -187,6 +191,65 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Chainlink Integration Highlight */}
+        <div className="neo-card bg-accent p-8 lg:p-10 mb-12 lg:mb-16 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full -translate-y-32 translate-x-32"></div>
+          
+          <div className="relative flex flex-col lg:flex-row lg:items-center justify-between space-y-6 lg:space-y-0">
+            <div className="flex items-center space-x-6">
+              <div className="neo-btn w-16 h-16 lg:w-20 h-20 bg-primary flex items-center justify-center">
+                <Network size={32} className="text-white" />
+              </div>
+              <div>
+                <h3 className="text-2xl lg:text-3xl font-bold text-text-primary mb-2">Chainlink-Powered Platform</h3>
+                <p className="text-text-secondary text-lg">AI scoring, dynamic pricing, automation & cross-chain investments</p>
+              </div>
+            </div>
+            <button 
+              onClick={() => onNavigate('chainlink')}
+              className="neo-btn flex items-center justify-center space-x-3 px-8 py-4 bg-primary text-white font-semibold hover:bg-primary"
+            >
+              <Network size={20} />
+              <span>Explore Chainlink Features</span>
+            </button>
+          </div>
+          
+          {/* Feature highlights */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div className="flex items-center space-x-3 mb-2">
+                <Brain size={20} className="text-primary" />
+                <span className="font-semibold text-text-primary">AI Scoring</span>
+              </div>
+              <div className="text-sm text-text-secondary">Real-time project evaluation</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div className="flex items-center space-x-3 mb-2">
+                <DollarSign size={20} className="text-success" />
+                <span className="font-semibold text-text-primary">Dynamic Pricing</span>
+              </div>
+              <div className="text-sm text-text-secondary">Market-driven valuations</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div className="flex items-center space-x-3 mb-2">
+                <Zap size={20} className="text-secondary" />
+                <span className="font-semibold text-text-primary">Automation</span>
+              </div>
+              <div className="text-sm text-text-secondary">Milestone-based funding</div>
+            </div>
+            
+            <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+              <div className="flex items-center space-x-3 mb-2">
+                <Globe size={20} className="text-accent" />
+                <span className="font-semibold text-text-primary">Cross-Chain</span>
+              </div>
+              <div className="text-sm text-text-secondary">Multi-blockchain support</div>
+            </div>
+          </div>
         </div>
 
         {/* Quick Access to Marketplace */}
@@ -431,7 +494,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           
           <button 
             onClick={() => onNavigate('marketplace')}
-            className="neo-card bg-white p-8 text-left group"
+            className="neo-car bg-white p-8 text-left group"
           >
             <ShoppingBag className="w-10 h-10 text-secondary mb-4" />
             <h4 className="font-semibold text-xl text-text-primary mb-3">Explore Marketplace</h4>
@@ -439,12 +502,12 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           </button>
           
           <button 
-            onClick={() => onNavigate('analytics')}
+            onClick={() => onNavigate('chainlink')}
             className="neo-card bg-white p-8 text-left group"
           >
-            <BarChart3 className="w-10 h-10 text-accent mb-4" />
-            <h4 className="font-semibold text-xl text-text-primary mb-3">View Analytics</h4>
-            <p className="text-text-secondary">Track performance and market insights</p>
+            <Network className="w-10 h-10 text-primary mb-4" />
+            <h4 className="font-semibold text-xl text-text-primary mb-3">Chainlink Features</h4>
+            <p className="text-text-secondary">Explore AI scoring, dynamic pricing, and cross-chain investments</p>
           </button>
         </div>
       </div>

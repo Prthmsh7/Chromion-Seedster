@@ -5,6 +5,7 @@ import Marketplace from './components/Marketplace';
 import InvestmentStream from './components/InvestmentStream';
 import UserProfile from './components/UserProfile';
 import EnhancedAnalytics from './components/EnhancedAnalytics';
+import ChainlinkDashboard from './components/ChainlinkDashboard';
 import AuthModal from './components/Auth';
 import MCPAssistantButton from './components/MCPAssistantButton';
 import LandingPage from './components/LandingPage';
@@ -14,7 +15,7 @@ import { supabase } from './lib/supabase';
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [showLanding, setShowLanding] = useState(true);
-  const [currentPage, setCurrentPage] = useState<'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'about'>('dashboard');
+  const [currentPage, setCurrentPage] = useState<'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'chainlink' | 'about'>('dashboard');
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [mcpInsights, setMcpInsights] = useState<any[]>([]);
@@ -45,7 +46,7 @@ function App() {
     }
   };
 
-  const handleNavigation = (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'about') => {
+  const handleNavigation = (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'chainlink' | 'about') => {
     setCurrentPage(page);
   };
 
@@ -73,6 +74,8 @@ function App() {
         return <UserProfile onBack={() => setCurrentPage('dashboard')} />;
       case 'analytics':
         return <EnhancedAnalytics onBack={() => setCurrentPage('dashboard')} />;
+      case 'chainlink':
+        return <ChainlinkDashboard onBack={() => setCurrentPage('dashboard')} />;
       case 'about':
         return <AboutPage onBack={() => setCurrentPage('dashboard')} />;
       case 'dashboard':

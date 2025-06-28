@@ -14,12 +14,13 @@ import {
   Shield,
   CreditCard,
   HelpCircle,
-  BarChart3
+  BarChart3,
+  Network
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 
 interface NavbarProps {
-  onNavigate: (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'about') => void;
+  onNavigate: (page: 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'chainlink' | 'about') => void;
   currentPage: string;
   user?: any;
   onShowAuth: () => void;
@@ -34,11 +35,12 @@ const Navbar: React.FC<NavbarProps> = ({ onNavigate, currentPage, user, onShowAu
     { id: 'marketplace', label: 'Marketplace', icon: ShoppingBag },
     { id: 'investment-stream', label: 'Investment Stream', icon: TrendingUp },
     { id: 'analytics', label: 'Analytics', icon: BarChart3 },
+    { id: 'chainlink', label: 'Chainlink', icon: Network },
     { id: 'about', label: 'About', icon: Info },
   ];
 
   const handleNavClick = (pageId: string) => {
-    onNavigate(pageId as 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'about');
+    onNavigate(pageId as 'dashboard' | 'marketplace' | 'investment-stream' | 'user-profile' | 'analytics' | 'chainlink' | 'about');
     setIsMenuOpen(false);
   };
 
