@@ -1,5 +1,5 @@
 import React from 'react';
-import { Scene3D, Scene3DCanvas } from './3d/Scene3D';
+import { Scene3D } from './3d/Scene3D';
 import { Coin } from './3d/animations/Coin';
 
 interface CoinCardProps {
