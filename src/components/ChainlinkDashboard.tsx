@@ -175,9 +175,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
   };
 
   const handleRefreshClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (chainlinkService) {
-      refreshData();
-    }
+    refreshData();
   };
 
   const formatCurrency = (amount: number) => {

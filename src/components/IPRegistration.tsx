@@ -232,27 +232,38 @@ export function IPRegistration({ walletAddress, onSuccess, selectedRepos = [] }:
 
       if (dbError) {
         console.error('Database error details:', dbError);
-        console.error('Error code:', dbError.code);
         console.error('Error message:', dbError.message);
-        console.error('Error details:', dbError.details);
-        console.error('Error hint:', dbError.hint);
         
-        // Provide more specific error messages based on error codes
-        if (dbError.code === '23505') {
-          throw new Error('A project with this title already exists. Please choose a different title.');
-        } else if (dbError.code === '23502') {
-          throw new Error('Missing required field. Please check all required fields are filled.');
-        } else if (dbError.code === '42501') {
-          throw new Error('Permission denied. Please make sure you are signed in properly.');
-        } else if (dbError.code === '42703') {
-          // Column does not exist error
-          if (dbError.message.includes('github_repo')) {
-            throw new Error('Database schema issue with github_repo column. Please contact support.');
+        // Type guard to check if the error has the properties we need
+        const isPostgrestError = (err: any): err is { 
+          message: string; 
+          code?: string; 
+          details?: string; 
+          hint?: string; 
+        } => {
+          return err && typeof err.message === 'string';
+        };
+        
+        // Provide more specific error messages based on error information
+        if (isPostgrestError(dbError)) {
+          if (dbError.message.includes('duplicate key')) {
+            throw new Error('A project with this title already exists. Please choose a different title.');
+          } else if (dbError.message.includes('violates not-null constraint')) {
+            throw new Error('Missing required field. Please check all required fields are filled.');
+          } else if (dbError.message.includes('permission denied')) {
+            throw new Error('Permission denied. Please make sure you are signed in properly.');
+          } else if (dbError.message.includes('column') && dbError.message.includes('does not exist')) {
+            // Column does not exist error
+            if (dbError.message.includes('github_repo')) {
+              throw new Error('Database schema issue with github_repo column. Please contact support.');
+            } else {
+              throw new Error(`Database column error: ${dbError.message}`);
+            }
+          } else if (dbError.message.includes('relation') && dbError.message.includes('does not exist')) {
+            throw new Error('Database table not found. Please contact support.');
           } else {
-            throw new Error(`Database column error: ${dbError.message}`);
+            throw new Error(`Database error: ${dbError.message}\n\nIf this problem persists, please contact support with the error details.`);
           }
-        } else if (dbError.message.includes('relation') && dbError.message.includes('does not exist')) {
-          throw new Error('Database table not found. Please contact support.');
         } else {
           throw new Error(`Database error: ${dbError.message}\n\nIf this problem persists, please contact support with the error details.`);
         }

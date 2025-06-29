@@ -121,7 +121,7 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
     try {
       // For demo purposes, we'll simulate the OAuth flow
       // In a real app, you'd redirect to GitHub OAuth
-      const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID || '';
+      const clientId = process.env.GITHUB_CLIENT_ID || '';
       
       if (!clientId) {
         // Fallback to demo mode with mock data
@@ -794,7 +794,7 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
                 </div>
 
                 <p className="text-text-secondary mb-4 line-clamp-2">{repo.description || 'No description available'}</p>
-
+                
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-4 text-sm text-text-muted">
                     <div className="flex items-center space-x-1">
