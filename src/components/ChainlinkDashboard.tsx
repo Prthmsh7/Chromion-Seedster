@@ -174,7 +174,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
     await loadAIScoring(chainlinkService);
   };
 
-  const handleRefreshClick = () => {
+  const handleRefreshClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (chainlinkService) {
       refreshData();
     }
