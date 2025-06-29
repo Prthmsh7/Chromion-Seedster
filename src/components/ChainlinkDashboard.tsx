@@ -174,6 +174,12 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
     await loadAIScoring(chainlinkService);
   };
 
+  const handleRefreshClick = () => {
+    if (chainlinkService) {
+      refreshData();
+    }
+  };
+
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
@@ -271,7 +277,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
             </div>
           </div>
           <button
-            onClick={refreshData}
+            onClick={handleRefreshClick}
             disabled={priceLoading}
             className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-xl hover:scale-105 transition-all duration-300 disabled:opacity-50"
           >
@@ -442,7 +448,9 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
 
               <div className="bg-light-card rounded-xl p-6 border border-light-border">
                 <div className="flex items-center space-x-3 mb-4">
-                  <Users size={20} className="text-secondary" />
+                  <div className="w-5 h-5 bg-secondary/10 rounded-full flex items-center justify-center">
+                    <span className="text-secondary text-xs font-bold">U</span>
+                  </div>
                   <h4 className="font-bold text-text-primary">Team Strength</h4>
                 </div>
                 <div className="text-3xl font-bold text-secondary mb-2">{projectScore.teamStrength}/100</div>

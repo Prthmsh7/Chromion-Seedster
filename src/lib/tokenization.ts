@@ -1,5 +1,4 @@
 // Tokenization Integration for Seedster Platform
-import { ethers } from 'ethers';
 
 // Tokenization contract addresses (Ethereum Sepolia testnet)
 export const TOKENIZATION_CONTRACTS = {
@@ -54,12 +53,8 @@ export const CARBON_CREDITS_ABI = [
 ];
 
 export class TokenizationService {
-  private provider: ethers.Provider;
-  private signer?: ethers.Signer;
-
-  constructor(provider: ethers.Provider, signer?: ethers.Signer) {
-    this.provider = provider;
-    this.signer = signer;
+  constructor() {
+    // Initialize without provider/signer for browser compatibility
   }
 
   // Get real estate tokenization data
@@ -558,32 +553,10 @@ export class TokenizationService {
 // Initialize Tokenization service
 export const initializeTokenizationService = async (): Promise<TokenizationService> => {
   try {
-    // Try to connect to MetaMask or other Web3 provider
-    if (typeof window !== 'undefined' && window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      
-      try {
-        // Try to get signer with nested try-catch for better error handling
-        const signer = await provider.getSigner();
-        return new TokenizationService(provider, signer);
-      } catch (signerError) {
-        // If getting signer fails (wallet locked, user rejected, etc.), 
-        // continue with read-only mode
-        console.log('Wallet connection not available, using read-only mode');
-        return new TokenizationService(provider);
-      }
-    } else {
-      // Fallback to read-only provider
-      const provider = new ethers.JsonRpcProvider(
-        'https://eth-sepolia.g.alchemy.com/v2/demo' // Demo endpoint
-      );
-      return new TokenizationService(provider);
-    }
+    return new TokenizationService();
   } catch (error) {
     console.error('Error initializing Tokenization service:', error);
-    // Return service with mock provider for demo
-    const provider = new ethers.JsonRpcProvider('https://eth-sepolia.g.alchemy.com/v2/demo');
-    return new TokenizationService(provider);
+    return new TokenizationService();
   }
 };
 

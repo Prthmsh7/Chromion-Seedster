@@ -1,5 +1,4 @@
 // Chainlink Integration for Seedster Platform
-import { ethers } from 'ethers';
 
 // Chainlink contract addresses (Ethereum Sepolia testnet)
 export const CHAINLINK_CONTRACTS = {
@@ -100,12 +99,8 @@ try {
 `;
 
 export class ChainlinkService {
-  private provider: ethers.Provider;
-  private signer?: ethers.Signer;
-
-  constructor(provider: ethers.Provider, signer?: ethers.Signer) {
-    this.provider = provider;
-    this.signer = signer;
+  constructor() {
+    // Initialize without provider/signer for browser compatibility
   }
 
   // Get latest price from Chainlink Price Feed
@@ -115,23 +110,17 @@ export class ChainlinkService {
     updatedAt: Date;
   }> {
     try {
-      const priceFeed = new ethers.Contract(
-        priceFeedAddress,
-        PRICE_FEED_ABI,
-        this.provider
-      );
-
-      const [roundId, answer, startedAt, updatedAt, answeredInRound] = 
-        await priceFeed.latestRoundData();
-
-      // Most Chainlink price feeds have 8 decimals
-      const decimals = 8;
-      const price = ethers.formatUnits(answer, decimals);
-
+      // Simulate price feed for demo purposes
+      const price = priceFeedAddress === CHAINLINK_CONTRACTS.ETH_USD 
+        ? (3000 + Math.random() * 500).toString()
+        : priceFeedAddress === CHAINLINK_CONTRACTS.BTC_USD
+        ? (60000 + Math.random() * 5000).toString()
+        : "1.00";
+      
       return {
         price,
-        decimals,
-        updatedAt: new Date(Number(updatedAt) * 1000)
+        decimals: 8,
+        updatedAt: new Date()
       };
     } catch (error) {
       console.error('Error fetching price:', error);
@@ -224,8 +213,6 @@ export class ChainlinkService {
     try {
       // In a real implementation, this would call Chainlink Functions
       // For demo purposes, we'll simulate the AI scoring
-      
-      const projectString = JSON.stringify(projectData);
       
       // Simulate AI analysis based on project characteristics
       let baseScore = 50;
@@ -432,23 +419,10 @@ export class ChainlinkService {
 // Initialize Chainlink service
 export const initializeChainlinkService = async (): Promise<ChainlinkService> => {
   try {
-    // Try to connect to MetaMask or other Web3 provider
-    if (typeof window !== 'undefined' && window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      return new ChainlinkService(provider, signer);
-    } else {
-      // Fallback to read-only provider
-      const provider = new ethers.JsonRpcProvider(
-        'https://eth-sepolia.g.alchemy.com/v2/demo' // Demo endpoint
-      );
-      return new ChainlinkService(provider);
-    }
+    return new ChainlinkService();
   } catch (error) {
     console.error('Error initializing Chainlink service:', error);
-    // Return service with mock provider for demo
-    const provider = new ethers.JsonRpcProvider('https://eth-sepolia.g.alchemy.com/v2/demo');
-    return new ChainlinkService(provider);
+    return new ChainlinkService();
   }
 };
 

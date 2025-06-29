@@ -164,8 +164,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
     try {
       const { data, error } = await supabase
         .from('ip_registrations')
-        .select('*')
-        .order('created_at', { ascending: false });
+        .select('*');
 
       if (error) throw error;
       setIPRegistrations(data || []);
@@ -369,7 +368,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ onBack }) => {
                 </div>
               </div>
               <div className="flex items-center justify-between mt-6">
-                <span className="text-primary font-medium">Get Starte</span>
+                <span className="text-primary font-medium">Get Started</span>
                 <ArrowRight size={20} className="text-primary group-hover:translate-x-1 transition-transform duration-300" />
               </div>
             </div>

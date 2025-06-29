@@ -260,9 +260,9 @@ class FilCDNClient {
 
 // Initialize FilCDN client
 const filcdnConfig: FilCDNConfig = {
-  apiKey: process.env.VITE_FILCDN_API_KEY || 'demo-key',
-  baseUrl: process.env.VITE_FILCDN_BASE_URL || 'https://api.filcdn.io/v1',
-  enabled: process.env.VITE_FILCDN_ENABLED === 'true',
+  apiKey: import.meta.env.VITE_FILCDN_API_KEY || 'demo-key',
+  baseUrl: import.meta.env.VITE_FILCDN_BASE_URL || 'https://api.filcdn.io/v1',
+  enabled: import.meta.env.VITE_FILCDN_ENABLED === 'true',
 };
 
 export const filcdnClient = new FilCDNClient(filcdnConfig);

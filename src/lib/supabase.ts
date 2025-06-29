@@ -23,13 +23,16 @@ const createMockClient = () => ({
 });
 
 // Check if Supabase is properly configured (not placeholder values)
-const isValidSupabaseConfig = process.env.VITE_SUPABASE_URL && 
-  process.env.VITE_SUPABASE_ANON_KEY && 
-  !process.env.VITE_SUPABASE_URL.includes('your_supabase_project_url') &&
-  process.env.VITE_SUPABASE_URL.startsWith('https://');
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+
+const isValidSupabaseConfig = SUPABASE_URL && 
+  SUPABASE_ANON_KEY && 
+  !SUPABASE_URL.includes('your_supabase_project_url') &&
+  SUPABASE_URL.startsWith('https://');
 
 export const supabase = isValidSupabaseConfig
-  ? createClient(process.env.VITE_SUPABASE_URL, process.env.VITE_SUPABASE_ANON_KEY)
+  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
   : createMockClient();
 
 export const isSupabaseConfigured = isValidSupabaseConfig;

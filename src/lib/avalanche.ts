@@ -1,5 +1,4 @@
 // Avalanche Integration for Seedster Platform
-import { ethers } from 'ethers';
 
 // Avalanche contract addresses (Fuji testnet)
 export const AVALANCHE_CONTRACTS = {
@@ -44,12 +43,8 @@ export const AVALANCHE_CHAINS = {
 };
 
 export class AvalancheService {
-  private provider: ethers.Provider;
-  private signer?: ethers.Signer;
-
-  constructor(provider: ethers.Provider, signer?: ethers.Signer) {
-    this.provider = provider;
-    this.signer = signer;
+  constructor() {
+    // Initialize without provider/signer for browser compatibility
   }
 
   // Get Avalanche C-Chain projects
@@ -428,23 +423,10 @@ export class AvalancheService {
 // Initialize Avalanche service
 export const initializeAvalancheService = async (): Promise<AvalancheService> => {
   try {
-    // Try to connect to MetaMask or other Web3 provider
-    if (typeof window !== 'undefined' && window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      return new AvalancheService(provider, signer);
-    } else {
-      // Fallback to read-only provider
-      const provider = new ethers.JsonRpcProvider(
-        'https://api.avax-test.network/ext/bc/C/rpc' // Avalanche Fuji testnet
-      );
-      return new AvalancheService(provider);
-    }
+    return new AvalancheService();
   } catch (error) {
     console.error('Error initializing Avalanche service:', error);
-    // Return service with mock provider for demo
-    const provider = new ethers.JsonRpcProvider('https://api.avax-test.network/ext/bc/C/rpc');
-    return new AvalancheService(provider);
+    return new AvalancheService();
   }
 };
 

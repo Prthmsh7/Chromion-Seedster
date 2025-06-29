@@ -59,8 +59,7 @@ const VideoUploadModal: React.FC<VideoUploadModalProps> = ({
         // Get user profile for channel name
         const { data: profile } = await supabase
           .from('profiles')
-          .select('username, full_name')
-          .limit(1);
+          .select('username, full_name');
         
         if (profile && profile.length > 0 && !channelName) {
           setChannelName(profile[0].username || profile[0].full_name || 'My Channel');

@@ -1,5 +1,4 @@
 // DeFi Integration for Seedster Platform
-import { ethers } from 'ethers';
 
 // DeFi contract addresses (Ethereum Sepolia testnet)
 export const DEFI_CONTRACTS = {
@@ -62,12 +61,8 @@ export const DEX_ROUTER_ABI = [
 ];
 
 export class DeFiService {
-  private provider: ethers.Provider;
-  private signer?: ethers.Signer;
-
-  constructor(provider: ethers.Provider, signer?: ethers.Signer) {
-    this.provider = provider;
-    this.signer = signer;
+  constructor() {
+    // Initialize without provider/signer for browser compatibility
   }
 
   // Get lending pool data
@@ -432,23 +427,10 @@ export class DeFiService {
 // Initialize DeFi service
 export const initializeDeFiService = async (): Promise<DeFiService> => {
   try {
-    // Try to connect to MetaMask or other Web3 provider
-    if (typeof window !== 'undefined' && window.ethereum) {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      return new DeFiService(provider, signer);
-    } else {
-      // Fallback to read-only provider
-      const provider = new ethers.JsonRpcProvider(
-        'https://eth-sepolia.g.alchemy.com/v2/demo' // Demo endpoint
-      );
-      return new DeFiService(provider);
-    }
+    return new DeFiService();
   } catch (error) {
     console.error('Error initializing DeFi service:', error);
-    // Return service with mock provider for demo
-    const provider = new ethers.JsonRpcProvider('https://eth-sepolia.g.alchemy.com/v2/demo');
-    return new DeFiService(provider);
+    return new DeFiService();
   }
 };
 

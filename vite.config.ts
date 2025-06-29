@@ -16,7 +16,7 @@ export default defineConfig({
     }),
   ],
   define: {
-    'process.env': process.env,
+    'process.env': {},
     global: 'globalThis',
   },
   resolve: {
@@ -26,4 +26,9 @@ export default defineConfig({
       util: 'util',
     },
   },
+  build: {
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  }
 })
