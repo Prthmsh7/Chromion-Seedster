@@ -121,7 +121,7 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
     try {
       // For demo purposes, we'll simulate the OAuth flow
       // In a real app, you'd redirect to GitHub OAuth
-      const clientId = process.env.GITHUB_CLIENT_ID || '';
+      const clientId = import.meta.env.VITE_GITHUB_CLIENT_ID || '';
       
       if (!clientId) {
         // Fallback to demo mode with mock data
@@ -515,7 +515,7 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
         
         <h3 className="text-2xl font-bold text-text-primary mb-4">Connect Your GitHub</h3>
         <p className="text-text-secondary mb-8 max-w-md mx-auto">
-          Link your GitHub profile to showcase your repositories and enhance your developer credibility on the platform.
+          Link your GitHub profile to showcase your technical expertise and repositories on the platform.
         </p>
 
         {error && (

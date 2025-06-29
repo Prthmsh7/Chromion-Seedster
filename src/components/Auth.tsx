@@ -192,7 +192,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
             // Create user profile
             try {
               const { error: profileError } = await supabase
-                .from('user_profiles')
+                .from('profiles')
                 .insert({
                   id: data.user.id,
                   email: email.trim().toLowerCase(),
