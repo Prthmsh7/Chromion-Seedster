@@ -228,8 +228,7 @@ export function IPRegistration({ walletAddress, onSuccess, selectedRepos = [] }:
       // Save to Supabase with explicit column selection
       const { data: insertedData, error: dbError } = await supabase
         .from('ip_registrations')
-        .insert([dbData])
-        .single();
+        .insert([dbData]);
 
       if (dbError) {
         console.error('Database error details:', dbError);

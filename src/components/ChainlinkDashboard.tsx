@@ -404,7 +404,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
             </div>
           </div>
           <button
-            onClick={loadAIScoring}
+            onClick={() => loadAIScoring(chainlinkService!)}
             disabled={scoringLoading}
             className="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-xl hover:scale-105 transition-all duration-300 disabled:opacity-50"
           >
@@ -440,7 +440,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
                 <div className="text-3xl font-bold text-primary mb-2">{projectScore.marketPotential}/100</div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-primary h-2 rounded-full"
+                    className="bg-primary h-2 rounded-full" 
                     style={{ width: `${projectScore.marketPotential}%` }}
                   ></div>
                 </div>
@@ -456,7 +456,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
                 <div className="text-3xl font-bold text-secondary mb-2">{projectScore.teamStrength}/100</div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-secondary h-2 rounded-full"
+                    className="bg-secondary h-2 rounded-full" 
                     style={{ width: `${projectScore.teamStrength}%` }}
                   ></div>
                 </div>
@@ -470,7 +470,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
                 <div className="text-3xl font-bold text-accent mb-2">{projectScore.technologyInnovation}/100</div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-accent h-2 rounded-full"
+                    className="bg-accent h-2 rounded-full" 
                     style={{ width: `${projectScore.technologyInnovation}%` }}
                   ></div>
                 </div>
