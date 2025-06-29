@@ -26,9 +26,12 @@ const createMockClient = () => ({
 const SUPABASE_URL = process.env.SUPABASE_URL || '';
 const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || '';
 
+console.log('Supabase URL:', SUPABASE_URL);
+console.log('Supabase Anon Key:', SUPABASE_ANON_KEY ? 'Provided' : 'Not provided');
+
 const isValidSupabaseConfig = SUPABASE_URL && 
   SUPABASE_ANON_KEY && 
-  !SUPABASE_URL.includes('your_supabase_project_url') &&
+  !SUPABASE_URL.includes('your-project-id') &&
   SUPABASE_URL.startsWith('https://');
 
 export const supabase = isValidSupabaseConfig

@@ -290,7 +290,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <Coins size={20} className="text-primary" />
+                  <DollarSign size={20} className="text-primary" />
                 </div>
                 <div>
                   <h3 className="font-bold text-text-primary">ETH/USD</h3>
@@ -316,7 +316,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center">
-                  <Coins size={20} className="text-secondary" />
+                  <DollarSign size={20} className="text-secondary" />
                 </div>
                 <div>
                   <h3 className="font-bold text-text-primary">BTC/USD</h3>
@@ -629,7 +629,7 @@ const ChainlinkDashboard: React.FC<ChainlinkDashboardProps> = ({ onBack }) => {
             disabled={milestoneLoading}
             className="flex items-center space-x-2 px-4 py-2 bg-accent text-white rounded-xl hover:scale-105 transition-all duration-300 disabled:opacity-50"
           >
-            <Timer size={18} className={milestoneLoading ? 'animate-spin' : ''} />
+            <Clock size={18} className={milestoneLoading ? 'animate-spin' : ''} />
             <span>Check Status</span>
           </button>
         </div>
