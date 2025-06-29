@@ -24,9 +24,10 @@ import {
   Database,
   Network,
   Bot,
-  Timer,
-  Coins,
-  TrendingDown
+  Search,
+  Settings,
+  Bell,
+  AlertCircle
 } from 'lucide-react';
 import { ChainlinkService, initializeChainlinkService, ProjectScore, DynamicValuation, MilestoneStatus, CCIPTransfer } from '../lib/chainlink';
 
