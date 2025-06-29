@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
-import { AuthProvider } from './contexts/AuthContext'
+import AuthProvider from './contexts/AuthContext'
 
 // Log environment variables (without exposing sensitive data)
 console.log('Environment check:');
