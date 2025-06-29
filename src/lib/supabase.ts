@@ -29,13 +29,23 @@ const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 console.log('Supabase URL:', SUPABASE_URL);
 console.log('Supabase Anon Key:', SUPABASE_ANON_KEY ? 'Provided' : 'Not provided');
 
+// Validate the Supabase configuration
 const isValidSupabaseConfig = SUPABASE_URL && 
   SUPABASE_ANON_KEY && 
   !SUPABASE_URL.includes('your-project-id') &&
   SUPABASE_URL.startsWith('https://');
 
+console.log('Is valid Supabase config:', isValidSupabaseConfig);
+
+// Create the Supabase client with explicit options
 export const supabase = isValidSupabaseConfig
-  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true
+      }
+    })
   : createMockClient();
 
 export const isSupabaseConfigured = isValidSupabaseConfig;

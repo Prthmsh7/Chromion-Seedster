@@ -23,7 +23,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log('AuthProvider initialized, isSupabaseConfigured:', isSupabaseConfigured);
+    
     if (!isSupabaseConfigured) {
+      console.warn('Supabase is not configured properly. Auth functionality will be limited.');
       setLoading(false);
       return;
     }
@@ -31,10 +34,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Get initial session
     const getInitialSession = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
+        console.log('Getting initial user session...');
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error) {
+          console.error('Error getting initial user:', error);
+        } else {
+          console.log('Initial user session:', user ? 'Logged in' : 'Not logged in');
+          setUser(user);
+        }
       } catch (error) {
-        console.error('Error getting initial session:', error);
+        console.error('Unexpected error getting initial session:', error);
       } finally {
         setLoading(false);
       }
@@ -43,23 +53,44 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     getInitialSession();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    );
+    try {
+      console.log('Setting up auth state change listener...');
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        async (event, session) => {
+          console.log('Auth state changed:', event, session ? 'Session exists' : 'No session');
+          setUser(session?.user ?? null);
+          setLoading(false);
+        }
+      );
 
-    return () => subscription.unsubscribe();
+      return () => {
+        console.log('Cleaning up auth subscription');
+        subscription.unsubscribe();
+      };
+    } catch (error) {
+      console.error('Error setting up auth listener:', error);
+      setLoading(false);
+      return () => {}; // Return empty cleanup function
+    }
   }, []);
 
   const signOut = async () => {
-    if (!isSupabaseConfigured) return;
+    if (!isSupabaseConfigured) {
+      console.warn('Supabase not configured, sign out operation simulated');
+      setUser(null);
+      return;
+    }
     
     try {
-      await supabase.auth.signOut();
+      console.log('Signing out user...');
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+      } else {
+        console.log('User signed out successfully');
+      }
     } catch (error) {
-      console.error('Error signing out:', error);
+      console.error('Unexpected error signing out:', error);
     }
   };
 

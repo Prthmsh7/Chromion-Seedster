@@ -196,8 +196,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onAuthSuccess })
                 .insert({
                   id: data.user.id,
                   email: email.trim().toLowerCase(),
-                  full_name: fullName.trim(),
-                  subscription_status: 'free'
+                  created_at: new Date().toISOString()
                 });
 
               if (profileError) {
