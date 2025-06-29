@@ -30,5 +30,11 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    rollupOptions: {
+      // Ensure environment variables are properly handled during build
+      external: [],
+    },
+    // Improve error reporting in production builds
+    sourcemap: true,
   }
 })
