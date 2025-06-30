@@ -6,7 +6,6 @@ import githubRoutes from './src/api/github.js';
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
 
 // Configure CORS
 app.use(cors({
@@ -23,6 +22,13 @@ app.use(express.json());
 // API routes
 app.use('/api/github', githubRoutes);
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-}); 
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
+// Export the Express app for Vercel
+export default app; 
