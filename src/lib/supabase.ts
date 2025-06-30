@@ -1,30 +1,39 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-let supabaseInstance: SupabaseClient | null = null;
+// Define a type for our mock client that matches SupabaseClient interface
+type MockClient = SupabaseClient<any, "public", any>;
 
 // Create a mock client for development when env vars are not set
-const createMockClient = () => ({
-  auth: {
+const createMockClient = (): MockClient => {
+  const mockClient = createClient(
+    'https://mock.supabase.co',
+    'mock-key',
+    {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true
+      }
+    }
+  );
+
+  // Override methods with mock implementations
+  mockClient.auth = {
+    ...mockClient.auth,
     signUp: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
     signInWithPassword: async () => ({ data: null, error: { message: 'Supabase not configured' } }),
     signOut: async () => ({ error: null }),
     getUser: async () => ({ data: { user: null }, error: null }),
     onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
-  },
-  from: () => ({
-    select: () => ({ data: [], error: null }),
-    insert: () => ({ data: null, error: { message: 'Supabase not configured' } }),
-    update: () => ({ data: null, error: { message: 'Supabase not configured' } }),
-    delete: () => ({ data: null, error: { message: 'Supabase not configured' } }),
-    eq: () => ({ data: [], error: null }),
-    upsert: () => ({ data: null, error: { message: 'Supabase not configured' } }),
-    single: () => ({ data: null, error: null }),
-    limit: () => ({ data: [], error: null }),
-    order: () => ({ data: [], error: null })
-  })
-});
+  } as any;
 
-const createSupabaseClient = () => {
+  // Add a flag to identify mock client
+  (mockClient as any).isMock = true;
+
+  return mockClient;
+};
+
+const createSupabaseClient = (): SupabaseClient => {
   try {
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -51,25 +60,25 @@ const createSupabaseClient = () => {
     }
 
     // Create the actual client
-    return createClient(supabaseUrl, supabaseAnonKey, {
+    const client = createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: true
       }
     });
+
+    return client;
   } catch (error) {
     console.error('Error creating Supabase client:', error);
     return createMockClient();
   }
 };
 
-// Initialize the client only once
-if (!supabaseInstance) {
-  supabaseInstance = createSupabaseClient();
-}
+// Initialize the client
+const supabaseInstance = createSupabaseClient();
 
-// Export the singleton instance
+// Export the instance (now guaranteed to be non-null)
 export const supabase = supabaseInstance;
 
 // Export configuration status

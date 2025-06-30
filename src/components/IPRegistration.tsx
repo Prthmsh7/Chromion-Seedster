@@ -235,13 +235,13 @@ export function IPRegistration({ walletAddress, onSuccess, selectedRepos = [] }:
         console.error('Error message:', dbError.message);
         
         // Type guard to check if the error has the properties we need
-        const isPostgrestError = (err: any): err is { 
+        const isPostgrestError = (err: unknown): err is { 
           message: string; 
           code?: string; 
           details?: string; 
           hint?: string; 
         } => {
-          return err && typeof err.message === 'string';
+          return typeof err === 'object' && err !== null && 'message' in err && typeof (err as any).message === 'string';
         };
         
         // Provide more specific error messages based on error information
