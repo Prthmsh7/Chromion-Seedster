@@ -37,18 +37,13 @@ const isValidSupabaseConfig = SUPABASE_URL &&
 
 console.log('Is valid Supabase config:', isValidSupabaseConfig);
 
-// Create the Supabase client with explicit options
+// Create the Supabase client with proper error handling
 export const supabase = isValidSupabaseConfig
   ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: {
         autoRefreshToken: true,
         persistSession: true,
         detectSessionInUrl: true
-      },
-      global: {
-        headers: {
-          'x-application-name': 'seedster'
-        }
       }
     })
   : createMockClient();
