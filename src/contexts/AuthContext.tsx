@@ -38,22 +38,30 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       try {
         console.log('Getting initial user session...');
         
-        const { data, error } = await supabase.auth.getSession();
+        const { data: { user }, error } = await supabase.auth.getUser();
         
         if (error) {
-          console.error('Error getting session:', error);
+          console.error('Error getting user:', error);
           setUser(null);
           setSession(null);
           setLoading(false);
           return;
         }
 
-        if (data?.session) {
-          console.log('Found existing session for user');
-          setSession(data.session);
-          setUser(data.session.user);
+        if (user) {
+          console.log('Found existing user');
+          setUser(user);
+          // Since we don't have direct access to session, we'll create a basic session object
+          setSession({
+            user,
+            access_token: '', // This will be handled by Supabase internally
+            refresh_token: '',
+            expires_in: -1,
+            expires_at: -1,
+            token_type: 'bearer'
+          });
         } else {
-          console.log('No existing session found');
+          console.log('No existing user found');
           setUser(null);
           setSession(null);
         }
