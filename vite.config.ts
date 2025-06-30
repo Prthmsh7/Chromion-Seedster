@@ -16,8 +16,7 @@ export default defineConfig({
     }),
   ],
   define: {
-    'process.env': {},
-    global: 'globalThis',
+    'process.env': process.env,
   },
   resolve: {
     alias: {
@@ -27,23 +26,28 @@ export default defineConfig({
     },
   },
   build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: true,
     commonjsOptions: {
       transformMixedEsModules: true,
     },
     rollupOptions: {
-      // Ensure environment variables are properly handled during build
-      external: [],
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+        },
+      },
     },
-    // Improve error reporting in production builds
-    sourcemap: true,
   },
   server: {
     port: 5173,
-    strictPort: true, // This will make Vite fail if port 5173 is not available
+    strictPort: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3000',
         changeOrigin: true,
+        secure: false,
       },
     },
   }
