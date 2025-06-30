@@ -32,8 +32,8 @@ export default function GitHubCallback() {
           return;
         }
 
-        // Exchange code for access token immediately
-        const response = await fetch('/api/github/callback', {
+        // Exchange code for access token
+        const response = await fetch('https://chromion-seedster.vercel.app/api/github/callback', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
