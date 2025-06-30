@@ -303,10 +303,11 @@ export function IPRegistration({ walletAddress, onSuccess, selectedRepos = [] }:
       console.error('Error registering IP:', err);
       let errorMessage = 'Failed to register IP. Please try again.';
       
+      // Type guard for Error objects
       if (err instanceof Error) {
         errorMessage = err.message;
-      } else if (typeof err === 'object' && err !== null && 'message' in err) {
-        errorMessage = String(err.message);
+      } else if (err && typeof err === 'object' && 'message' in err && typeof (err as { message: string }).message === 'string') {
+        errorMessage = (err as { message: string }).message;
       }
       
       setError(errorMessage);
