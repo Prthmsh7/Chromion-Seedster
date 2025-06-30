@@ -130,17 +130,21 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
       }
 
       // Real GitHub OAuth flow
-      const redirectUri = `${window.location.origin}/auth/github/callback`;
-      const scope = 'repo,user:email';
+      const redirectUri = encodeURIComponent(`http://localhost:5173/auth/github/callback`);
+      const scope = encodeURIComponent('repo,user:email');
       const state = Math.random().toString(36).substring(7);
       
       localStorage.setItem('github_oauth_state', state);
       
-      const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}`;
+      const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&state=${state}&response_type=code`;
       
       // Open popup for OAuth
       const popup = window.open(authUrl, 'github-oauth', 'width=600,height=700');
       
+      if (!popup) {
+        throw new Error('Failed to open the GitHub authorization popup. Please allow popups for this site.');
+      }
+
       // Listen for popup completion
       const checkClosed = setInterval(() => {
         if (popup?.closed) {
@@ -152,11 +156,14 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
             setAccessToken(token);
             fetchGitHubData(token);
           } else {
-            setError('GitHub authentication was cancelled or failed');
+            setError('GitHub authentication was cancelled or failed. Please try again.');
             setIsLoading(false);
           }
         }
-      }, 1000);
+      }, 500); // Check more frequently
+
+      // Cleanup interval if component unmounts
+      return () => clearInterval(checkClosed);
 
     } catch (error) {
       console.error('GitHub connection error:', error);
@@ -362,46 +369,98 @@ const GitHubIntegration: React.FC<GitHubIntegrationProps> = ({
       // Fetch user data
       const userResponse = await fetch('https://api.github.com/user', {
         headers: {
-          'Authorization': `token ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Accept': 'application/vnd.github.v3+json'
         }
       });
 
       if (!userResponse.ok) {
-        throw new Error('Failed to fetch user data');
+        const errorData = await userResponse.json();
+        throw new Error(`Failed to fetch user data: ${errorData.message}`);
       }
 
       const userData = await userResponse.json();
+      console.log('GitHub User Data:', userData);
 
       // Fetch repositories
       const reposResponse = await fetch('https://api.github.com/user/repos?sort=updated&per_page=100', {
         headers: {
-          'Authorization': `token ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Accept': 'application/vnd.github.v3+json'
         }
       });
 
       if (!reposResponse.ok) {
-        throw new Error('Failed to fetch repositories');
+        const errorData = await reposResponse.json();
+        throw new Error(`Failed to fetch repositories: ${errorData.message}`);
       }
 
       const reposData = await reposResponse.json();
+      console.log('GitHub Repos Data:', reposData);
 
-      setGithubUser(userData);
-      setRepositories(reposData);
+      // Map the response to match our interface
+      const mappedUserData: GitHubUser = {
+        login: userData.login,
+        name: userData.name || userData.login,
+        bio: userData.bio || '',
+        avatar_url: userData.avatar_url,
+        html_url: userData.html_url,
+        public_repos: userData.public_repos,
+        followers: userData.followers,
+        following: userData.following,
+        created_at: userData.created_at,
+        location: userData.location || '',
+        company: userData.company || '',
+        blog: userData.blog || '',
+        twitter_username: userData.twitter_username || '',
+        hireable: userData.hireable || false
+      };
+
+      const mappedReposData: GitHubRepoProps[] = reposData.map((repo: any) => ({
+        id: repo.id,
+        name: repo.name,
+        full_name: repo.full_name,
+        description: repo.description || '',
+        html_url: repo.html_url,
+        language: repo.language || 'Unknown',
+        stargazers_count: repo.stargazers_count,
+        forks_count: repo.forks_count,
+        watchers_count: repo.watchers_count,
+        created_at: repo.created_at,
+        updated_at: repo.updated_at,
+        topics: repo.topics || [],
+        private: repo.private,
+        size: repo.size,
+        default_branch: repo.default_branch,
+        open_issues_count: repo.open_issues_count,
+        has_issues: repo.has_issues,
+        has_projects: repo.has_projects,
+        has_wiki: repo.has_wiki,
+        archived: repo.archived,
+        disabled: repo.disabled,
+        pushed_at: repo.pushed_at
+      }));
+
+      setGithubUser(mappedUserData);
+      setRepositories(mappedReposData);
       setIsConnected(true);
 
       // Save connection data
       localStorage.setItem('github_connection', JSON.stringify({
-        user: userData,
-        repos: reposData,
+        user: mappedUserData,
+        repos: mappedReposData,
         connectedAt: new Date().toISOString()
       }));
       localStorage.setItem('github_token', token);
 
     } catch (error) {
       console.error('Error fetching GitHub data:', error);
-      setError('Failed to fetch GitHub data');
+      setError(error instanceof Error ? error.message : 'Failed to fetch GitHub data');
+      setIsConnected(false);
+      setGithubUser(null);
+      setRepositories([]);
+      localStorage.removeItem('github_connection');
+      localStorage.removeItem('github_token');
     } finally {
       setIsLoading(false);
     }

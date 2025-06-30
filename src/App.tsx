@@ -16,6 +16,8 @@ import MCPAssistantButton from './components/MCPAssistantButton';
 import LandingPage from './components/LandingPage';
 import AboutPage from './components/AboutPage';
 import { supabase } from './lib/supabase';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import GitHubCallback from './pages/auth/github/callback';
 
 function App() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -117,25 +119,32 @@ function App() {
 
   // Show main application if user is authenticated
   return (
-    <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
-      <Navbar 
-        onNavigate={handleNavigation} 
-        currentPage={currentPage}
-        user={user}
-        onShowAuth={() => setShowAuthModal(true)}
-      />
-      {renderCurrentPage()}
-      
-      {/* Authentication Modal */}
-      <AuthModal 
-        isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
-        onAuthSuccess={handleAuthSuccess}
-      />
+    <Router>
+      <Routes>
+        <Route path="/auth/github/callback" element={<GitHubCallback />} />
+        <Route path="/" element={
+          <div className={`min-h-screen bg-light-bg text-text-primary transition-all duration-1000 ${isLoaded ? 'fade-in' : 'opacity-0'}`}>
+            <Navbar 
+              onNavigate={handleNavigation} 
+              currentPage={currentPage}
+              user={user}
+              onShowAuth={() => setShowAuthModal(true)}
+            />
+            {renderCurrentPage()}
+            
+            {/* Authentication Modal */}
+            <AuthModal 
+              isOpen={showAuthModal}
+              onClose={() => setShowAuthModal(false)}
+              onAuthSuccess={handleAuthSuccess}
+            />
 
-      {/* MCP Assistant Button (floating) */}
-      <MCPAssistantButton onInsightGenerated={handleInsightGenerated} />
-    </div>
+            {/* MCP Assistant Button (floating) */}
+            <MCPAssistantButton onInsightGenerated={handleInsightGenerated} />
+          </div>
+        } />
+      </Routes>
+    </Router>
   );
 }
 

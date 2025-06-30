@@ -36,5 +36,15 @@ export default defineConfig({
     },
     // Improve error reporting in production builds
     sourcemap: true,
+  },
+  server: {
+    port: 5173,
+    strictPort: true, // This will make Vite fail if port 5173 is not available
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+      },
+    },
   }
 })
