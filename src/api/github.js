@@ -13,8 +13,8 @@ router.post('/callback', async (req, res) => {
   try {
     // Exchange code for access token
     const tokenResponse = await axios.post('https://github.com/login/oauth/access_token', {
-      client_id: process.env.VITE_GITHUB_CLIENT_ID,
-      client_secret: process.env.VITE_GITHUB_CLIENT_SECRET,
+      client_id: process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_CLIENT_SECRET,
       code,
     }, {
       headers: {

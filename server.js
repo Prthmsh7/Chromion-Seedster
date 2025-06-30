@@ -19,8 +19,19 @@ app.use(cors({
 
 app.use(express.json());
 
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // API routes
 app.use('/api/github', githubRoutes);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ error: 'Internal Server Error', details: err.message });
+});
 
 // For local development
 if (process.env.NODE_ENV !== 'production') {
