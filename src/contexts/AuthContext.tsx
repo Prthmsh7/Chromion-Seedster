@@ -35,16 +35,28 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const getInitialSession = async () => {
       try {
         console.log('Getting initial user session...');
-        const { data: { user }, error } = await supabase.auth.getUser();
         
-        if (error) {
-          console.error('Error getting initial user:', error);
-        } else {
-          console.log('Initial user session:', user ? 'Logged in' : 'Not logged in');
-          setUser(user);
+        // First try to get the session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Error getting session:', sessionError);
+          setUser(null);
+          setLoading(false);
+          return;
         }
+
+        if (session?.user) {
+          console.log('Found existing session for user');
+          setUser(session.user);
+        } else {
+          console.log('No existing session found');
+          setUser(null);
+        }
+        
       } catch (error) {
         console.error('Unexpected error getting initial session:', error);
+        setUser(null);
       } finally {
         setLoading(false);
       }
