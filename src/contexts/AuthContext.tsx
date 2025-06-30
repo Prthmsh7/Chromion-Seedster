@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '@supabase/supabase-js';
+import { User, Session } from '@supabase/supabase-js';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -20,6 +21,7 @@ export const useAuth = () => {
 
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -36,27 +38,30 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
       try {
         console.log('Getting initial user session...');
         
-        // First try to get the session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        const { data, error } = await supabase.auth.getSession();
         
-        if (sessionError) {
-          console.error('Error getting session:', sessionError);
+        if (error) {
+          console.error('Error getting session:', error);
           setUser(null);
+          setSession(null);
           setLoading(false);
           return;
         }
 
-        if (session?.user) {
+        if (data?.session) {
           console.log('Found existing session for user');
-          setUser(session.user);
+          setSession(data.session);
+          setUser(data.session.user);
         } else {
           console.log('No existing session found');
           setUser(null);
+          setSession(null);
         }
         
       } catch (error) {
         console.error('Unexpected error getting initial session:', error);
         setUser(null);
+        setSession(null);
       } finally {
         setLoading(false);
       }
@@ -68,8 +73,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     try {
       console.log('Setting up auth state change listener...');
       const { data: { subscription } } = supabase.auth.onAuthStateChange(
-        async (event, session) => {
-          console.log('Auth state changed:', event, session ? 'Session exists' : 'No session');
+        async (_event, session) => {
+          console.log('Auth state changed:', _event, session ? 'Session exists' : 'No session');
+          setSession(session);
           setUser(session?.user ?? null);
           setLoading(false);
         }
@@ -90,6 +96,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     if (!isSupabaseConfigured) {
       console.warn('Supabase not configured, sign out operation simulated');
       setUser(null);
+      setSession(null);
       return;
     }
     
@@ -100,6 +107,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         console.error('Error signing out:', error);
       } else {
         console.log('User signed out successfully');
+        setUser(null);
+        setSession(null);
       }
     } catch (error) {
       console.error('Unexpected error signing out:', error);
@@ -108,6 +117,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
 
   const value = {
     user,
+    session,
     loading,
     signOut
   };
