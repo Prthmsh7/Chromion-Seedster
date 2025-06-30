@@ -1,70 +1,32 @@
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from '@supabase/supabase-js';
 
-// Define the options type for better type safety
-const defaultOptions = {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true
-  },
-  global: {
-    headers: { 'x-application-name': 'seedster' }
-  }
-};
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-// Create a mock client for development when env vars are not set
-const createMockClient = (): SupabaseClient => {
-  return createClient(
-    'https://mock.supabase.co',
-    'mock-key',
-    defaultOptions
-  );
-};
+console.log('Supabase URL:', SUPABASE_URL);
+console.log('Supabase Anon Key:', SUPABASE_ANON_KEY ? 'Provided' : 'Not provided');
 
-const createSupabaseClient = (): SupabaseClient => {
-  try {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+// Validate the configuration
+const isValidConfig = 
+  SUPABASE_URL && 
+  SUPABASE_ANON_KEY && 
+  !SUPABASE_URL.includes('your-project-id') &&
+  SUPABASE_URL.startsWith('https://');
 
-    if (!supabaseUrl || !supabaseAnonKey) {
-      console.warn('Supabase credentials are missing');
-      return createMockClient();
+console.log('Is valid Supabase config:', isValidConfig);
+
+// Create the Supabase client
+export const supabase = createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
     }
-
-    console.log('Supabase URL:', supabaseUrl);
-    console.log('Supabase Anon Key:', supabaseAnonKey ? 'Provided' : 'Not provided');
-
-    // Validate the configuration
-    const isValidConfig = 
-      supabaseUrl.startsWith('https://') && 
-      !supabaseUrl.includes('your-project-id') &&
-      supabaseAnonKey.length > 0;
-
-    console.log('Is valid Supabase config:', isValidConfig);
-
-    if (!isValidConfig) {
-      console.warn('Invalid Supabase configuration');
-      return createMockClient();
-    }
-
-    // Create the actual client
-    return createClient(
-      supabaseUrl,
-      supabaseAnonKey,
-      defaultOptions
-    );
-
-  } catch (error) {
-    console.error('Error creating Supabase client:', error);
-    return createMockClient();
   }
-};
-
-// Initialize the client
-const supabaseInstance = createSupabaseClient();
-
-// Export the instance
-export const supabase = supabaseInstance;
+);
 
 // Export configuration status
-export const isSupabaseConfigured = !(supabase as any).isMock;
+export const isSupabaseConfigured = isValidConfig;
